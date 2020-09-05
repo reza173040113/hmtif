@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+import 'DatabaseManager.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -56,14 +61,19 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future readData() async {
+  Future<Map> readData() async {
     await Firebase.initializeApp();
     Future<DocumentSnapshot> documentReference =
         Firestore.instance.collection("MyStudents").document(name).get();
 
-    // documentReference.then(( datasnapshot) => {
-    //   print(datasnapshot.data(["name"]));
-    // });
+    documentReference.then((datasnapshot) => {
+          print(datasnapshot.data()['name']),
+          print(datasnapshot.data()['studentId']),
+          print(datasnapshot.data()['studyProgramId']),
+          print(datasnapshot.data()['studentGpa'])
+
+          // print(datasnapshot.data(["studentId"]));
+        });
   }
 
   Future<DocumentSnapshot> updateData() async {
@@ -94,12 +104,27 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  // List studentList = [];
+
   @override
   void initState() {
-    createData();
-    readData();
+    //createData();
+    //readData();
     super.initState();
+    //fetchDatabaseList();
   }
+
+  // fetchDatabaseList() async {
+  //   dynamic resultant = await DatabaseManager().getUsersList();
+
+  //   if (resultant == null) {
+  //     print('Unable to retrieve');
+  //   } else {
+  //     setState(() {
+  //       studentList = resultant;
+  //     });
+  //   }
+  // }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +132,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: Text("My FLutter College"),
         ),
-        body: SingleChildScrollView(
+        body: Container(
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: SingleChildScrollView(
@@ -169,7 +194,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
                 SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
@@ -211,6 +236,43 @@ class _MyAppState extends State<MyApp> {
                           })
                     ],
                   ),
+                ),
+                StreamBuilder(
+                  stream:
+                      Firestore.instance.collection("MyStudents").snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (context, index) {
+                          // Firebase.initializeApp();
+                          DocumentSnapshot documentSnapshot =
+                              snapshot.data.documents[index];
+                          return Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Text(documentSnapshot.data()["name"]),
+                              ),
+                              Expanded(
+                                child:
+                                    Text(documentSnapshot.data()["studentId"]),
+                              ),
+                              Expanded(
+                                child: Text(
+                                    documentSnapshot.data()["studyProgramId"]),
+                              ),
+                              Expanded(
+                                child: Text(documentSnapshot
+                                    .data()["studentGpa"]
+                                    .toString()),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
                 )
               ]),
             ),
