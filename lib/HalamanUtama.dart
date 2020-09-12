@@ -1,5 +1,8 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'HalamanAspirasi.dart' as aspirasi;
+import 'HalamanAspirasi.dart';
+import 'HalamanBeranda.dart';
+import 'Login_Page.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -13,50 +16,45 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  TabController controller;
-  @override
-  void initState() {
-    controller = new TabController(vsync: this, length: 3);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
+class _HomeState extends State<Home> {
+  int _selectedIndex = 0;
+  final _widgetOptions = [
+    Aspirasi(),
+    Beranda(),
+    Aspirasi(),
+  ];
+  
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        backgroundColor: Colors.green[900],
-        title: new Text("Halaman Utama"),
-        bottom: new TabBar(
-          controller: controller,
-          tabs: <Widget>[
-            new Tab(
-              text: "Aspirasi",
-            ),
-            new Tab(
-              text: "Beranda",
-            ),
-            new Tab(
-              text: "Donasi",
-            ),
-            
-          ],
-        ),
-      ),
-      body: new TabBarView(
-        controller: controller,
-        children: <Widget>[
-          new aspirasi.Aspirasi(),
-          new aspirasi.Aspirasi(),
-          new aspirasi.Aspirasi(),
+    return  Scaffold(
+      
+      bottomNavigationBar: CurvedNavigationBar(
+        index: 1,
+        color: Colors.white,
+        backgroundColor: Colors.blueGrey[50],
+        buttonBackgroundColor: Colors.white,
+        height: 50,
+        items: <Widget>[
+          Icon(
+            Icons.verified_user,
+            size: 20,
+            color: Colors.black,
+          ),
+          Icon(Icons.verified_user, size: 20, color: Colors.black),
+          Icon(Icons.verified_user, size: 20, color: Colors.black),
         ],
+        animationDuration: Duration(
+          milliseconds: 200
+        ),
+        animationCurve: Curves.bounceInOut,
+        onTap: (index) {
+          setState((){
+            _selectedIndex = index;
+          });
+        },
       ),
+      body: _widgetOptions[_selectedIndex],
     );
   }
 }
