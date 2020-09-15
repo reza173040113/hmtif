@@ -74,6 +74,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
+    var delay = 1.5;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -136,23 +137,103 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                     FadeAnimation(
                         1.5,
                         Text(
+                          widget.MyStudent.data()["name"],
+                          style: TextStyle(
+                              color: Color.fromRGBO(49, 39, 79, 1),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40),
+                        )),
+                    new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+
+                    FadeAnimation(
+                        1.5,
+                        Row(
+                          children: <Widget>[
+                            new Text(
+                              widget.MyStudent.data()["studentGpa"].toString(),
+                              style: TextStyle(color: Colors.green),
+                            ),
+                            new Text(
+                              " mahasiswa telah menyetujui aspirasi dan keluhan ini",
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 10),
+                            ),
+                          ],
+                        )),
+                    new Padding(padding: EdgeInsets.all(3)),
+                    FadeAnimation(
+                        1.5,
+                        Stack(
+                          children: <Widget>[
+                            Container(
+                              width: 350,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                            Material(
+                              borderRadius: BorderRadius.circular(5),
+                              child: AnimatedContainer(
+                                height: 10,
+                                width: 350 * 0.5,
+                                duration: Duration(milliseconds: 500),
+                                decoration: BoxDecoration(
+                                    color: Colors.lightGreen,
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            )
+                          ],
+                        )),
+                    new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                    FadeAnimation(
+                        1.5,
+                        Text(
                           "Deskripsi",
                           style: TextStyle(
                               color: Color.fromRGBO(49, 39, 79, 1),
                               fontWeight: FontWeight.bold,
                               fontSize: 20),
-                        )
-                        ),
-                        new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                        FadeAnimation(
+                        )),
+                    new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                    FadeAnimation(
                         1.5,
                         Text(
-                          widget.MyStudent.data()["name"],
+                          widget.MyStudent.data()["studentId"],
                           style: TextStyle(
                               color: Color.fromRGBO(49, 39, 79, 1),
                               fontSize: 12),
-                        )
-                        ),
+                        )),
+                    new Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
+
+                    FadeAnimation(
+                        2,
+                        Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: LinearGradient(colors: [
+                                Color.fromRGBO(143, 148, 251, 1),
+                                Color.fromRGBO(143, 148, 251, .6),
+                              ])),
+                          child: Center(
+                            child: Text(
+                              "Setuju",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )),
+                    // FadeAnimation(
+                    //     1.5,
+                    //     Text(
+                    //       "Deskripsi",
+                    //       style: TextStyle(
+                    //           color: Color.fromRGBO(49, 39, 79, 1),
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 20),
+                    //     )),
                   ]),
             ),
             // FadeAnimation(

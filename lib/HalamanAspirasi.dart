@@ -109,6 +109,7 @@ class Aspirasi extends StatelessWidget {
                   return SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: ListView.builder(
+                      scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemCount: snapshot.data.documents.length,
                       itemBuilder: (context, index) {
