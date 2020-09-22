@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hmtif/HalamanAdminAspirasi.dart';
 
 import 'AuthenticationServices.dart';
 import 'HalamanAdmin.dart';
@@ -14,7 +15,7 @@ Future<void> main() async {
     initialRoute: '/login',
     routes: {
       '/login': (context) => LoginScreen(),
-      '/admin': (context) => MyApp(),
+      '/admin': (context) => AdminAspirasi(),
       '/user': (context) => Home(),
     },
   ));

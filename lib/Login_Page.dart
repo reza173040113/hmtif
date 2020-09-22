@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'AuthenticationServices.dart';
 import 'HalamanAdmin.dart';
+import 'HalamanAdminAspirasi.dart';
 import 'HalamanRegister.dart';
 
 Future<void> main() async {
@@ -13,7 +14,7 @@ Future<void> main() async {
     initialRoute: '/login',
     routes: {
       '/login': (context) => LoginScreen(),
-      '/admin' : (context) => MyApp(),
+      '/admin' : (context) => AdminAspirasi(),
     },
   ));
 }
