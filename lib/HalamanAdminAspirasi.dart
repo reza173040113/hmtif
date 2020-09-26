@@ -22,14 +22,14 @@ Future<void> main() async {
 
 class AdminAspirasi extends StatelessWidget {
   String name;
-  navigateToDetail(BuildContext context, DocumentSnapshot post) async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EditAspirasi(
-                  MyStudent: post,
-                )));
-  }
+  // navigateToDetail(BuildContext context, DocumentSnapshot post) async {
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => EditAspirasi(
+  //                 MyStudent: post,
+  //               )));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +74,8 @@ class AdminAspirasi extends StatelessWidget {
                             // Firebase.initializeApp();
                             DocumentSnapshot documentSnapshot =
                                 snapshot.data.documents[index];
+                            Map<String, dynamic> task = documentSnapshot.data();
+
                             return FadeAnimation(
                                 1.8,
                                 Card(
@@ -91,7 +93,7 @@ class AdminAspirasi extends StatelessWidget {
                                       children: <Widget>[
                                         new IconButton(
                                             icon: new Icon(Icons.edit),
-                                            onPressed: () {
+                                            onPressed: () async {
                                               // Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context){
                                               //   var editAspirasi = new EditAspirasi(
                                               //   name:name,
@@ -102,10 +104,19 @@ class AdminAspirasi extends StatelessWidget {
                                               // );
                                               //   return editAspirasi;
                                               // }));
-                                              navigateToDetail(
-                                                  context,
-                                                  snapshot
-                                                      .data.documents[index]);
+                                              // navigateToDetail(
+                                              //     context,
+                                              //     snapshot
+                                              //         .data.documents[index]);
+                                              bool result = await Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return EditAspirasi(
+                                                  documentId: documentSnapshot.documentID,
+                                                  name: task['name'],
+                                                  studentId: task['studentId'],
+                                                  studyProgramId: task['studyProgramId'],
+                                                  studentGpa:task['studentGpa'],
+                                                );
+                                              }),);
                                             }),
                                         new IconButton(
                                             icon: new Icon(Icons.delete),
@@ -139,7 +150,6 @@ class AdminAspirasi extends StatelessWidget {
                                                   );
                                                 },
                                               );
-                                              
                                             })
                                       ],
                                     ),

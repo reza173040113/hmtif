@@ -19,7 +19,18 @@ Future<void> main() async {
 }
 
 class EditAspirasi extends StatefulWidget {
- 
+  final String name, studentId, studyProgramId, documentId;
+  // final bool isEdit;
+
+  final double studentGpa;
+  EditAspirasi({
+    // @required this.isEdit,
+    @required this.documentId,
+    @required this.name,
+    @required this.studentId,
+    @required this.studyProgramId,
+    @required this.studentGpa,
+  });
   // EditAspirasi(
   //     String name, String studentId, String studyProgramId, double studentGpa) {
   //   this.name = name;
@@ -28,20 +39,19 @@ class EditAspirasi extends StatefulWidget {
   //   this.studentGpa = studentGpa;
   // }
   // EditAspirasi(this.name,this.studentId,this.studyProgramId,this.studentGpa);
-  // final String name, studentId, studyProgramId;
-  // final double studentGpa;
-  final DocumentSnapshot MyStudent;
-  EditAspirasi({this.MyStudent});
+
+  //final DocumentSnapshot MyStudent;
+  // EditAspirasi({this.MyStudent});
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   _EditAspirasiState createState() => _EditAspirasiState();
 }
 
 class _EditAspirasiState extends State<EditAspirasi> {
-  TextEditingController controllerName;
-  TextEditingController controllerStudentId;
-  TextEditingController controllerStudyProgramId;
-  TextEditingController controllerStudentGpa;
+  TextEditingController controllerName = TextEditingController();
+  TextEditingController controllerStudentId = TextEditingController();
+  TextEditingController controllerStudyProgramId = TextEditingController();
+  TextEditingController controllerStudentGpa = TextEditingController();
   String name, studentId, studyProgramId;
   double studentGpa;
   getStudentName(name) {
@@ -130,12 +140,25 @@ class _EditAspirasiState extends State<EditAspirasi> {
     //createData();
     //readData();
     super.initState();
-    controllerName = new TextEditingController(text: widget.MyStudent.data()["name"].toString());
-    controllerStudentId = new TextEditingController(text: widget.MyStudent.data()["studentId"].toString());
-    controllerStudyProgramId =
-        new TextEditingController(text: widget.MyStudent.data()["studyProgramId"].toString());
-    controllerStudentGpa =
-        new TextEditingController(text: widget.MyStudent.data()["studentGpa"].toString());
+    // controllerName = new TextEditingController(
+    //     text: widget.MyStudent.data()["name"].toString());
+    // controllerStudentId = new TextEditingController(
+    //     text: widget.MyStudent.data()["studentId"].toString());
+    // controllerStudyProgramId = new TextEditingController(
+    //     text: widget.MyStudent.data()["studyProgramId"].toString());
+    // controllerStudentGpa = new TextEditingController(
+    //     text: widget.MyStudent.data()["studentGpa"].toString());
+    controllerName.text = widget.name.toString();
+    controllerStudentId.text = widget.studentId.toString();
+    controllerStudyProgramId.text = widget.studyProgramId.toString();
+    controllerStudentGpa.text = widget.studentGpa.toString();
+
+    // controllerStudentId = new TextEditingController(
+    //     text: widget.studentId
+    // controllerStudyProgramId = new TextEditingController(
+    //     text: widget.MyStudent.data()["studyProgramId"].toString());
+    // controllerStudentGpa = new TextEditingController(
+    //     text: widget.MyStudent.data()["studentGpa"].toString());
 
     //fetchDatabaseList();
   }
@@ -252,8 +275,54 @@ class _EditAspirasiState extends State<EditAspirasi> {
                               borderRadius: BorderRadius.circular(16)),
                           child: Text("Update"),
                           textColor: Colors.white,
-                          onPressed: () {
-                            updateData();
+                          onPressed: () async {
+                            FirebaseFirestore _firestore =
+                                FirebaseFirestore.instance;
+
+                            //updateData();
+                            String name = controllerName.text;
+                            String studentId = controllerStudentId.text;
+                            String studyProgramId =
+                                controllerStudyProgramId.text;
+                            double studentGpa = double.parse(
+                                controllerStudentGpa.text.toString());
+
+                            DocumentReference documentReference =
+                                FirebaseFirestore.instance
+                                    .collection("MyStudents")
+                                    .document(
+                                        name);
+                            Map<String, dynamic> students = {
+                              "name": name,
+                              "studentId": studentId,
+                              "studyProgramId": studyProgramId,
+                              "studentGpa": studentGpa,
+                            };
+
+                            documentReference
+                                .setData(students)
+                                .whenComplete(() {
+                              print("$name updated");
+                            });
+                            // FirebaseFirestore.instance.runTransaction((transaction) async {
+                            //   DocumentSnapshot task =
+                            //       await transaction.get(documentReference);
+                            //   await transaction.update(task.reference, {
+                            //     "name": name,
+                            //     "studentId": studentId,
+                            //     "studyProgramId": studyProgramId,
+                            //     "studentGpa": studentGpa
+                            //   });
+                            // print(task);
+                            // if (task.exists) {
+                            //   await transaction.update(
+                            //       documentReference, <String, dynamic>{
+                            //     'name': name,
+                            //     'studentId': studentId,
+                            //     'studyProgramId': studyProgramId,
+                            //     'studentGpa': studentGpa,
+                            //   });
+                            // }
                           }),
                       RaisedButton(
                           color: Colors.red,
