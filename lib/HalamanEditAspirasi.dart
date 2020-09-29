@@ -73,7 +73,7 @@ class _EditAspirasiState extends State<EditAspirasi> {
   Future<DocumentSnapshot> createData() async {
     await Firebase.initializeApp();
     DocumentReference documentReference =
-        Firestore.instance.collection("MyStudents").document(name);
+        Firestore.instance.collection("MyStudents").document();
 
     //createMap
     Map<String, dynamic> students = {
@@ -280,6 +280,7 @@ class _EditAspirasiState extends State<EditAspirasi> {
                                 FirebaseFirestore.instance;
 
                             //updateData();
+                            String documentId = widget.documentId;
                             String name = controllerName.text;
                             String studentId = controllerStudentId.text;
                             String studyProgramId =
@@ -291,7 +292,7 @@ class _EditAspirasiState extends State<EditAspirasi> {
                                 FirebaseFirestore.instance
                                     .collection("MyStudents")
                                     .document(
-                                        name);
+                                        documentId);
                             Map<String, dynamic> students = {
                               "name": name,
                               "studentId": studentId,
