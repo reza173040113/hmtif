@@ -19,17 +19,16 @@ Future<void> main() async {
 }
 
 class EditAspirasi extends StatefulWidget {
-  final String name, studentId, studyProgramId, documentId;
+  final String name, deskripsi, documentId;
   // final bool isEdit;
 
-  final double studentGpa;
+  final int jumlahLike;
   EditAspirasi({
     // @required this.isEdit,
     @required this.documentId,
     @required this.name,
-    @required this.studentId,
-    @required this.studyProgramId,
-    @required this.studentGpa,
+    @required this.deskripsi,
+    @required this.jumlahLike,
   });
   // EditAspirasi(
   //     String name, String studentId, String studyProgramId, double studentGpa) {
@@ -49,9 +48,9 @@ class EditAspirasi extends StatefulWidget {
 
 class _EditAspirasiState extends State<EditAspirasi> {
   TextEditingController controllerName = TextEditingController();
-  TextEditingController controllerStudentId = TextEditingController();
-  TextEditingController controllerStudyProgramId = TextEditingController();
-  TextEditingController controllerStudentGpa = TextEditingController();
+  TextEditingController controllerDeskripsi = TextEditingController();
+  // TextEditingController controllerStudyProgramId = TextEditingController();
+  // TextEditingController controllerStudentGpa = TextEditingController();
   String name, studentId, studyProgramId;
   double studentGpa;
   getStudentName(name) {
@@ -149,9 +148,9 @@ class _EditAspirasiState extends State<EditAspirasi> {
     // controllerStudentGpa = new TextEditingController(
     //     text: widget.MyStudent.data()["studentGpa"].toString());
     controllerName.text = widget.name.toString();
-    controllerStudentId.text = widget.studentId.toString();
-    controllerStudyProgramId.text = widget.studyProgramId.toString();
-    controllerStudentGpa.text = widget.studentGpa.toString();
+    controllerDeskripsi.text = widget.deskripsi.toString();
+    // controllerStudyProgramId.text = widget.studyProgramId.toString();
+    // controllerStudentGpa.text = widget.studentGpa.toString();
 
     // controllerStudentId = new TextEditingController(
     //     text: widget.studentId
@@ -179,7 +178,7 @@ class _EditAspirasiState extends State<EditAspirasi> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text("My FLutter College"),
+          title: Text("Halaman Edit Aspirasi"),
         ),
         body: Container(
           child: Padding(
@@ -191,7 +190,7 @@ class _EditAspirasiState extends State<EditAspirasi> {
                   child: TextFormField(
                     controller: controllerName,
                     decoration: InputDecoration(
-                        labelText: "Name",
+                        labelText: "Aspirasi dan Keluhan",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                             borderSide:
@@ -204,9 +203,9 @@ class _EditAspirasiState extends State<EditAspirasi> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextFormField(
-                    controller: controllerStudentId,
+                    controller: controllerDeskripsi,
                     decoration: InputDecoration(
-                        labelText: "Student ID",
+                        labelText: "Deskripsi",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                             borderSide:
@@ -216,36 +215,36 @@ class _EditAspirasiState extends State<EditAspirasi> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: TextFormField(
-                    controller: controllerStudyProgramId,
-                    decoration: InputDecoration(
-                        labelText: "Study Program ID",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0))),
-                    onChanged: (String studyProgramId) {
-                      getStudyProgramId(studyProgramId);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: TextFormField(
-                    controller: controllerStudentGpa,
-                    decoration: InputDecoration(
-                        labelText: "GPA",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0))),
-                    onChanged: (String gpa) {
-                      getStudentGpa(gpa);
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(bottom: 8),
+                //   child: TextFormField(
+                //     controller: controllerStudyProgramId,
+                //     decoration: InputDecoration(
+                //         labelText: "Study Program ID",
+                //         fillColor: Colors.white,
+                //         focusedBorder: OutlineInputBorder(
+                //             borderSide:
+                //                 BorderSide(color: Colors.blue, width: 2.0))),
+                //     onChanged: (String studyProgramId) {
+                //       getStudyProgramId(studyProgramId);
+                //     },
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(bottom: 8),
+                //   child: TextFormField(
+                //     controller: controllerStudentGpa,
+                //     decoration: InputDecoration(
+                //         labelText: "GPA",
+                //         fillColor: Colors.white,
+                //         focusedBorder: OutlineInputBorder(
+                //             borderSide:
+                //                 BorderSide(color: Colors.blue, width: 2.0))),
+                //     onChanged: (String gpa) {
+                //       getStudentGpa(gpa);
+                //     },
+                //   ),
+                // ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -282,22 +281,21 @@ class _EditAspirasiState extends State<EditAspirasi> {
                             //updateData();
                             String documentId = widget.documentId;
                             String name = controllerName.text;
-                            String studentId = controllerStudentId.text;
-                            String studyProgramId =
-                                controllerStudyProgramId.text;
-                            double studentGpa = double.parse(
-                                controllerStudentGpa.text.toString());
+                            String deskripsi = controllerDeskripsi.text;
+                            // String studyProgramId =
+                            //     controllerStudyProgramId.text;
+                            // double studentGpa = double.parse(
+                            //     controllerStudentGpa.text.toString());
 
                             DocumentReference documentReference =
                                 FirebaseFirestore.instance
-                                    .collection("MyStudents")
+                                    .collection("Aspirasi")
                                     .document(
                                         documentId);
                             Map<String, dynamic> students = {
                               "name": name,
-                              "studentId": studentId,
-                              "studyProgramId": studyProgramId,
-                              "studentGpa": studentGpa,
+                              "deskripsi": deskripsi,
+                              "jumlahLike": 0,
                             };
 
                             documentReference

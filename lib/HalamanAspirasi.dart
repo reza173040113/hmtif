@@ -22,14 +22,14 @@ Future<void> main() async {
 }
 
 class Aspirasi extends StatelessWidget {
-  navigateToDetail(BuildContext context, DocumentSnapshot post) async {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DetailAspirasi(
-                  MyStudent: post,
-                )));
-  }
+  // navigateToDetail(BuildContext context, DocumentSnapshot post) async {
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => DetailAspirasi(
+  //                 MyStudent: post,
+  //               )));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class Aspirasi extends StatelessWidget {
               ),
             ),
             StreamBuilder(
-              stream: Firestore.instance.collection("MyStudents").snapshots(),
+              stream: Firestore.instance.collection("Aspirasi").snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return SingleChildScrollView(
@@ -116,22 +116,34 @@ class Aspirasi extends StatelessWidget {
                         // Firebase.initializeApp();
                         DocumentSnapshot documentSnapshot =
                             snapshot.data.documents[index];
+                                                        Map<String, dynamic> task = documentSnapshot.data();
+
                         return FadeAnimation(
                             1.8,
                             Card(
                               child: ListTile(
                                 title: Text(documentSnapshot.data()['name']),
                                 subtitle:
-                                    Text(documentSnapshot.data()['studentId']),
+                                    Text("Like "+documentSnapshot.data()['jumlahLike'].toString()),
                                 leading: CircleAvatar(
                                     child: Image(
                                   image: AssetImage('img/akun.png'),
                                 )),
                                 trailing: Icon(Icons.more_vert),
                                 isThreeLine: true,
-                                onTap: () => navigateToDetail(
-                                    context, snapshot.data.documents[index]),
-                              ),
+                                onTap: () async {
+                                              
+                                              bool result = await Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                return DetailAspirasi(
+                                                  documentId: documentSnapshot.documentID,
+                                                  name: task['name'],
+                                                  deskripsi: task['deskripsi'],
+                                                  jumlahLike: task['jumlahLike'],
+                                                );
+                                              }
+                                              ),
+                                              );   
+                                }),
                             ));
                       },
                     ),

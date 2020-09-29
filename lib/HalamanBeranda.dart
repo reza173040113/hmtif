@@ -21,14 +21,14 @@ Future<void> main() async {
 }
 
 class Beranda extends StatelessWidget {
-  navigateToDetail(BuildContext context,DocumentSnapshot post) async{
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => DetailAspirasi(
-                  MyStudent: post,
-                )));
-  }
+  // navigateToDetail(BuildContext context,DocumentSnapshot post) async{
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => DetailAspirasi(
+  //                 MyStudent: post,
+  //               )));
+  // }
 
   @override
   Widget build(BuildContext context) {

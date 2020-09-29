@@ -5,66 +5,18 @@ import 'package:flutter/material.dart';
 
 import 'Animation/FadeAnimation.dart';
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   await Firebase.initializeApp();
-//   runApp(MaterialApp(
-//     debugShowCheckedModeBanner: false,
-//     theme: ThemeData(
-//         brightness: Brightness.light,
-//         primaryColor: Colors.blue,
-//         accentColor: Colors.cyan),
-//     home: DetailAspirasi(),
-//   ));
-// }
-
-// class DetailAspirasi extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: new Center(
-//         child: new Column(
-//           children: <Widget>[
-//             SingleChildScrollView(
-//               scrollDirection: Axis.vertical,
-//               child: StreamBuilder(
-//                 stream: Firestore.instance.collection("MyStudents").snapshots(),
-//                 builder: (context, snapshot) {
-//                   if (snapshot.hasData) {
-//                     return ListView.builder(
-//                       shrinkWrap: true,
-//                       itemCount: snapshot.data.documents.length,
-//                       itemBuilder: (context, index) {
-//                         // Firebase.initializeApp();
-//                         DocumentSnapshot documentSnapshot =
-//                             snapshot.data.documents[index];
-//                         return Card(
-//                           child: ListTile(
-//                             title: Text(documentSnapshot.data()['name']),
-//                             subtitle:
-//                                 Text(documentSnapshot.data()['studentId']),
-//                             leading: CircleAvatar(
-//                               child: Image(image: AssetImage('img/akun.png'),)
-//                             ),
-
-//                           ),
-//                         );
-//                       },
-//                     );
-//                   }
-//                 },
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 class DetailAspirasi extends StatefulWidget {
-  final DocumentSnapshot MyStudent;
-  DetailAspirasi({this.MyStudent});
+  // final DocumentSnapshot MyStudent;
+  // DetailAspirasi({this.MyStudent});
+  final String name, deskripsi,documentId;
+  final int jumlahLike;
+  DetailAspirasi({
+    // @required this.isEdit,
+    @required this.documentId,
+    @required this.name,
+    @required this.deskripsi,
+    @required this.jumlahLike,
+  });
   @override
   _DetailAspirasiState createState() => _DetailAspirasiState();
 }
@@ -137,7 +89,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                     FadeAnimation(
                         1.5,
                         Text(
-                          widget.MyStudent.data()["name"],
+                          widget.name,
                           style: TextStyle(
                               color: Color.fromRGBO(49, 39, 79, 1),
                               fontWeight: FontWeight.bold,
@@ -150,7 +102,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                         Row(
                           children: <Widget>[
                             new Text(
-                              widget.MyStudent.data()["studentGpa"].toString(),
+                              widget.jumlahLike.toString(),
                               style: TextStyle(color: Colors.green),
                             ),
                             new Text(
@@ -199,7 +151,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                     FadeAnimation(
                         1.5,
                         Text(
-                          widget.MyStudent.data()["studentId"],
+                          widget.deskripsi,
                           style: TextStyle(
                               color: Color.fromRGBO(49, 39, 79, 1),
                               fontSize: 12),
@@ -208,20 +160,48 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
 
                     FadeAnimation(
                         2,
-                        Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              gradient: LinearGradient(colors: [
-                                Color.fromRGBO(143, 148, 251, 1),
-                                Color.fromRGBO(143, 148, 251, .6),
-                              ])),
-                          child: Center(
-                            child: Text(
-                              "Setuju",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                        GestureDetector(
+                          onTap: () {
+                            
+                            String documentId = widget.documentId;
+                            String name = widget.name;
+                            String deskripsi = widget.deskripsi;
+                           
+                            int jumlahLike = int.parse(
+                                widget.jumlahLike.toString());
+                            DocumentReference documentReference =
+                                FirebaseFirestore.instance
+                                    .collection("Aspirasi")
+                                    .document(
+                                        documentId);
+                            Map<String, dynamic> students = {
+                              "name": name,
+                              "deskripsi": deskripsi ,
+                              
+                              "jumlahLike": jumlahLike + 1,
+                            };
+
+                            documentReference
+                                .setData(students)
+                                .whenComplete(() {
+                              print("$name updated");
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                gradient: LinearGradient(colors: [
+                                  Color.fromRGBO(143, 148, 251, 1),
+                                  Color.fromRGBO(143, 148, 251, .6),
+                                ])),
+                            child: Center(
+                              child: Text(
+                                "Setuju",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         )),

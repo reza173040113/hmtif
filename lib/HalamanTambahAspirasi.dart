@@ -25,38 +25,35 @@ class TambahAspirasi extends StatefulWidget {
 }
 
 class _TambahAspirasiState extends State<TambahAspirasi> {
-  String name, studentId, studyProgramId;
-  double studentGpa;
-  getStudentName(name) {
+  String name, deskripsi;
+  int jumlahLike;
+  getAspirasiName(name) {
     this.name = name;
   }
 
-  getStudentId(studentId) {
-    this.studentId = studentId;
+  getAspirasiDeskripsi(deskripsi) {
+    this.deskripsi = deskripsi;
   }
 
-  getStudyProgramId(studyProgramId) {
-    this.studyProgramId = studyProgramId;
-  }
+ 
 
-  getStudentGpa(studentGpa) {
-    this.studentGpa = double.parse(studentGpa);
+  getAspirasiLike(jumlahLike) {
+    this.jumlahLike = int.parse(jumlahLike);
   }
 
   Future<DocumentSnapshot> createData() async {
     await Firebase.initializeApp();
     DocumentReference documentReference =
-        Firestore.instance.collection("MyStudents").document();
+        Firestore.instance.collection("Aspirasi").document();
 
     //createMap
-    Map<String, dynamic> students = {
+    Map<String, dynamic> aspirasi = {
       "name": name,
-      "studentId": studentId,
-      "studyProgramId": studyProgramId,
-      "studentGpa": studentGpa
+      "deskripsi": deskripsi,
+      "jumlahLike": 0,
     };
 
-    documentReference.setData(students).whenComplete(() {
+    documentReference.setData(aspirasi).whenComplete(() {
       print("$name created");
     });
   }
@@ -76,23 +73,23 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
         });
   }
 
-  Future<DocumentSnapshot> updateData() async {
-    await Firebase.initializeApp();
-    DocumentReference documentReference =
-        Firestore.instance.collection("MyStudents").document(name);
+  // Future<DocumentSnapshot> updateData() async {
+  //   await Firebase.initializeApp();
+  //   DocumentReference documentReference =
+  //       Firestore.instance.collection("MyStudents").document(name);
 
-    //createMap
-    Map<String, dynamic> students = {
-      "name": name,
-      "studentId": studentId,
-      "studyProgramId": studyProgramId,
-      "studentGpa": studentGpa
-    };
+  //   //createMap
+  //   Map<String, dynamic> students = {
+  //     "name": name,
+  //     "studentId": studentId,
+  //     "studyProgramId": studyProgramId,
+  //     "studentGpa": studentGpa
+  //   };
 
-    documentReference.setData(students).whenComplete(() {
-      print("$name updated");
-    });
-  }
+  //   documentReference.setData(students).whenComplete(() {
+  //     print("$name updated");
+  //   });
+  // }
 
   Future<DocumentSnapshot> deleteData() async {
     await Firebase.initializeApp();
@@ -130,7 +127,7 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          title: Text("My FLutter College"),
+          title: Text("Halaman Tambah Aspirasi"),
         ),
         body: Container(
           child: Padding(
@@ -141,13 +138,13 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextFormField(
                     decoration: InputDecoration(
-                        labelText: "Name",
+                        labelText: "Aspirasi dan Keluhan",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.blue, width: 2.0))),
                     onChanged: (String name) {
-                      getStudentName(name);
+                      getAspirasiName(name);
                     },
                   ),
                 ),
@@ -155,44 +152,44 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextFormField(
                     decoration: InputDecoration(
-                        labelText: "Student ID",
+                        labelText: "Deskripsi",
                         fillColor: Colors.white,
                         focusedBorder: OutlineInputBorder(
                             borderSide:
                                 BorderSide(color: Colors.blue, width: 2.0))),
-                    onChanged: (String studentId) {
-                      getStudentId(studentId);
+                    onChanged: (String deskripsi) {
+                      getAspirasiDeskripsi(deskripsi);
                     },
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        labelText: "Study Program ID",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0))),
-                    onChanged: (String studyProgramId) {
-                      getStudyProgramId(studyProgramId);
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        labelText: "GPA",
-                        fillColor: Colors.white,
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0))),
-                    onChanged: (String gpa) {
-                      getStudentGpa(gpa);
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(bottom: 8),
+                //   child: TextFormField(
+                //     decoration: InputDecoration(
+                //         labelText: "",
+                //         fillColor: Colors.white,
+                //         focusedBorder: OutlineInputBorder(
+                //             borderSide:
+                //                 BorderSide(color: Colors.blue, width: 2.0))),
+                //     onChanged: (String studyProgramId) {
+                //       getStudyProgramId(studyProgramId);
+                //     },
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(bottom: 8),
+                //   child: TextFormField(
+                //     decoration: InputDecoration(
+                //         labelText: "GPA",
+                //         fillColor: Colors.white,
+                //         focusedBorder: OutlineInputBorder(
+                //             borderSide:
+                //                 BorderSide(color: Colors.blue, width: 2.0))),
+                //     onChanged: (String gpa) {
+                //       getStudentGpa(gpa);
+                //     },
+                //   ),
+                // ),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -223,7 +220,7 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                           child: Text("Update"),
                           textColor: Colors.white,
                           onPressed: () {
-                            updateData();
+                            // updateData();
                           }),
                       RaisedButton(
                           color: Colors.red,
