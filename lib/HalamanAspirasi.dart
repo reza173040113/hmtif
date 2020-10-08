@@ -155,7 +155,7 @@ class Aspirasi extends StatelessWidget {
                             DocumentSnapshot documentSnapshot =
                                 snapshot.data.documents[index];
                             Map<String, dynamic> task = documentSnapshot.data();
-
+                          if(documentSnapshot.data()['name']=="a"){
                             return FadeAnimation(
                                 1.8,
                                 Card(
@@ -255,6 +255,107 @@ class Aspirasi extends StatelessWidget {
                                         );
                                       }),
                                 ));
+                          }else{
+                            return FadeAnimation(
+                                1.8,
+                                Card(
+                                  color: Color.fromARGB(225, 71, 92, 135),
+                                  child: ListTile(
+                                      title: Text(
+                                          documentSnapshot.data()['name'],
+                                          style:
+                                              TextStyle(color: Colors.white)
+                                              ),
+                                      subtitle: Text(
+                                          "Like " +
+                                              documentSnapshot
+                                                  .data()['jumlahLike']
+                                                  .toString(),
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      // leading: CircleAvatar(
+                                      //     child: Image(
+                                      //   image: AssetImage('img/akun.png'),
+                                      // )),
+                                      // trailing: PopupMenuButton(
+                                      //   itemBuilder: (BuildContext context) {
+                                      //     return List<PopupMenuEntry<String>>()
+                                      //       ..add(PopupMenuItem<String>(
+                                      //         value: 'edit',
+                                      //         child: Text('Edit'),
+                                      //       ))
+                                      //       ..add(PopupMenuItem<String>(
+                                      //         value: 'delete',
+                                      //         child: Text('Delete'),
+                                      //       ));
+                                      //   },
+                                      //   onSelected: (String value) async {
+                                      //     if (value == 'edit') {
+                                      //       bool result = await Navigator.push(
+                                      //         context,
+                                      //         MaterialPageRoute(
+                                      //             builder: (context) {
+                                      //           return EditAspirasi(
+                                      //             documentId: documentSnapshot
+                                      //                 .documentID,
+                                      //             name: task['name'],
+                                      //             deskripsi: task['deskripsi'],
+                                      //             jumlahLike:
+                                      //                 task['jumlahLike'],
+                                      //           );
+                                      //         }),
+                                      //       );
+                                      //     } else if (value == 'delete') {
+                                      //       showDialog(
+                                      //         context: context,
+                                      //         builder: (BuildContext context) {
+                                      //           return AlertDialog(
+                                      //             title:
+                                      //                 Text('Yakin mau hapus?'),
+                                      //             actions: <Widget>[
+                                      //               FlatButton(
+                                      //                 child: Text('Tidak'),
+                                      //                 onPressed: () {
+                                      //                   Navigator.pop(context);
+                                      //                 },
+                                      //               ),
+                                      //               FlatButton(
+                                      //                 child: Text('Ya'),
+                                      //                 onPressed: () {
+                                      //                   documentSnapshot
+                                      //                       .reference
+                                      //                       .delete();
+                                      //                   Navigator.pop(context);
+                                      //                 },
+                                      //               ),
+                                      //             ],
+                                      //           );
+                                      //         },
+                                      //       );
+                                      //     }
+                                      //   },
+                                      //   child: Icon(
+                                      //     Icons.more_vert,
+                                      //     color: Colors.white,
+                                      //   ),
+                                      // ),
+                                      isThreeLine: true,
+                                      onTap: () async {
+                                        bool result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return DetailAspirasi(
+                                              documentId:
+                                                  documentSnapshot.documentID,
+                                              name: task['name'],
+                                              deskripsi: task['deskripsi'],
+                                              jumlahLike: task['jumlahLike'],
+                                            );
+                                          }),
+                                        );
+                                      }),
+                                ));
+                          }
                           },
                         ),
                       );
