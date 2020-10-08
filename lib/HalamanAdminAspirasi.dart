@@ -97,8 +97,11 @@ class AdminAspirasi extends StatelessWidget {
                                                   deskripsi: task['deskripsi'],
                                                   jumlahLike: task['jumlahLike'],
                                                 );
-                                              }),);
-                                            }),
+                                              }
+                                              ),
+                                              );
+                                            }
+                                            ),
                                         new IconButton(
                                             icon: new Icon(Icons.delete),
                                             onPressed: () {

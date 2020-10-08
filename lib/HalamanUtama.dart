@@ -30,19 +30,19 @@ class _HomeState extends State<Home> {
     return  Scaffold(
       
       bottomNavigationBar: CurvedNavigationBar(
-        index: 1,
+        index: 0,
         color: Colors.white,
         backgroundColor: Colors.blueGrey[50],
         buttonBackgroundColor: Colors.white,
         height: 50,
         items: <Widget>[
           Icon(
-            Icons.verified_user,
+            Icons.menu_book_outlined,
             size: 20,
             color: Colors.black,
           ),
-          Icon(Icons.verified_user, size: 20, color: Colors.black),
-          Icon(Icons.verified_user, size: 20, color: Colors.black),
+          Icon(Icons.home, size: 20, color: Colors.black),
+          Icon(Icons.menu_book_outlined, size: 20, color: Colors.black),
         ],
         animationDuration: Duration(
           milliseconds: 200
@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
           });
         },
       ),
-      body: _widgetOptions[_selectedIndex],
+      body: _widgetOptions[_selectedIndex],backgroundColor: Colors.blueGrey[50],
     );
   }
 }

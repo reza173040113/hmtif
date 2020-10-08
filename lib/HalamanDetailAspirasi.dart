@@ -2,13 +2,15 @@
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hmtif/HalamanAspirasi.dart';
 
 import 'Animation/FadeAnimation.dart';
+import 'HalamanUtama.dart';
 
 class DetailAspirasi extends StatefulWidget {
   // final DocumentSnapshot MyStudent;
   // DetailAspirasi({this.MyStudent});
-  final String name, deskripsi,documentId;
+  final String name, deskripsi, documentId;
   final int jumlahLike;
   DetailAspirasi({
     // @required this.isEdit,
@@ -162,22 +164,19 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                         2,
                         GestureDetector(
                           onTap: () {
-                            
                             String documentId = widget.documentId;
                             String name = widget.name;
                             String deskripsi = widget.deskripsi;
-                           
-                            int jumlahLike = int.parse(
-                                widget.jumlahLike.toString());
+
+                            int jumlahLike =
+                                int.parse(widget.jumlahLike.toString());
                             DocumentReference documentReference =
                                 FirebaseFirestore.instance
                                     .collection("Aspirasi")
-                                    .document(
-                                        documentId);
+                                    .document(documentId);
                             Map<String, dynamic> students = {
                               "name": name,
-                              "deskripsi": deskripsi ,
-                              
+                              "deskripsi": deskripsi,
                               "jumlahLike": jumlahLike + 1,
                             };
 
@@ -186,6 +185,26 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                 .whenComplete(() {
                               print("$name updated");
                             });
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                        'Terimakasih sudah menyetujui aspirasi dan keluhan ini,silahkan liat aspirasi dan keluhan yang lain'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              new MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          new Home()));
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                           child: Container(
                             height: 50,

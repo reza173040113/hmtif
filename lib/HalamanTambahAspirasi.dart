@@ -58,70 +58,15 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
     });
   }
 
-  Future<Map> readData() async {
-    await Firebase.initializeApp();
-    Future<DocumentSnapshot> documentReference =
-        Firestore.instance.collection("MyStudents").document(name).get();
-
-    documentReference.then((datasnapshot) => {
-          print(datasnapshot.data()['name']),
-          print(datasnapshot.data()['studentId']),
-          print(datasnapshot.data()['studyProgramId']),
-          print(datasnapshot.data()['studentGpa'])
-
-          // print(datasnapshot.data(["studentId"]));
-        });
-  }
-
-  // Future<DocumentSnapshot> updateData() async {
-  //   await Firebase.initializeApp();
-  //   DocumentReference documentReference =
-  //       Firestore.instance.collection("MyStudents").document(name);
-
-  //   //createMap
-  //   Map<String, dynamic> students = {
-  //     "name": name,
-  //     "studentId": studentId,
-  //     "studyProgramId": studyProgramId,
-  //     "studentGpa": studentGpa
-  //   };
-
-  //   documentReference.setData(students).whenComplete(() {
-  //     print("$name updated");
-  //   });
-  // }
-
-  Future<DocumentSnapshot> deleteData() async {
-    await Firebase.initializeApp();
-    DocumentReference documentReference =
-        Firestore.instance.collection("MyStudents").document(name);
-
-    documentReference.delete().whenComplete(() {
-      print("$name deleted");
-    });
-  }
-
-  // List studentList = [];
+ 
 
   @override
   void initState() {
-    //createData();
-    //readData();
+    
     super.initState();
-    //fetchDatabaseList();
   }
 
-  // fetchDatabaseList() async {
-  //   dynamic resultant = await DatabaseManager().getUsersList();
-
-  //   if (resultant == null) {
-  //     print('Unable to retrieve');
-  //   } else {
-  //     setState(() {
-  //       studentList = resultant;
-  //     });
-  //   }
-  // }
+  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,34 +107,7 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                     },
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.only(bottom: 8),
-                //   child: TextFormField(
-                //     decoration: InputDecoration(
-                //         labelText: "",
-                //         fillColor: Colors.white,
-                //         focusedBorder: OutlineInputBorder(
-                //             borderSide:
-                //                 BorderSide(color: Colors.blue, width: 2.0))),
-                //     onChanged: (String studyProgramId) {
-                //       getStudyProgramId(studyProgramId);
-                //     },
-                //   ),
-                // ),
-                // Padding(
-                //   padding: EdgeInsets.only(bottom: 8),
-                //   child: TextFormField(
-                //     decoration: InputDecoration(
-                //         labelText: "GPA",
-                //         fillColor: Colors.white,
-                //         focusedBorder: OutlineInputBorder(
-                //             borderSide:
-                //                 BorderSide(color: Colors.blue, width: 2.0))),
-                //     onChanged: (String gpa) {
-                //       getStudentGpa(gpa);
-                //     },
-                //   ),
-                // ),
+                
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -204,73 +122,11 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                           onPressed: () {
                             createData();
                           }),
-                      RaisedButton(
-                          color: Colors.green,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Text("Read"),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            readData();
-                          }),
-                      RaisedButton(
-                          color: Colors.yellow,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Text("Update"),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            // updateData();
-                          }),
-                      RaisedButton(
-                          color: Colors.red,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16)),
-                          child: Text("Delete"),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            deleteData();
-                          })
+                      
                     ],
                   ),
                 ),
-                StreamBuilder(
-                  stream:
-                      Firestore.instance.collection("MyStudents").snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (context, index) {
-                          // Firebase.initializeApp();
-                          DocumentSnapshot documentSnapshot =
-                              snapshot.data.documents[index];
-                          return Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(documentSnapshot.data()["name"]),
-                              ),
-                              Expanded(
-                                child:
-                                    Text(documentSnapshot.data()["studentId"]),
-                              ),
-                              Expanded(
-                                child: Text(
-                                    documentSnapshot.data()["studyProgramId"]),
-                              ),
-                              Expanded(
-                                child: Text(documentSnapshot
-                                    .data()["studentGpa"]
-                                    .toString()),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  },
-                )
+               
               ]),
             ),
           ),
