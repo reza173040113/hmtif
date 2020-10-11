@@ -31,18 +31,18 @@ class _HomeState extends State<Home> {
       
       bottomNavigationBar: CurvedNavigationBar(
         index: 0,
-        color: Colors.white,
+        color:  Color.fromARGB(255, 75, 71, 68),
         backgroundColor: Colors.blueGrey[50],
-        buttonBackgroundColor: Colors.white,
+        buttonBackgroundColor: Color.fromARGB(225, 192, 158, 112),
         height: 50,
         items: <Widget>[
           Icon(
             Icons.menu_book_outlined,
             size: 20,
-            color: Colors.black,
+            color: Colors.white,
           ),
-          Icon(Icons.home, size: 20, color: Colors.black),
-          Icon(Icons.menu_book_outlined, size: 20, color: Colors.black),
+          Icon(Icons.home, size: 20, color: Colors.white),
+          Icon(Icons.menu_book_outlined, size: 20, color: Colors.white),
         ],
         animationDuration: Duration(
           milliseconds: 200
