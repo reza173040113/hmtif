@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'HalamanAspirasi.dart';
 import 'HalamanBeranda.dart';
 import 'Login_Page.dart';
+import 'Views/HalamanAspirasi.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -31,9 +31,9 @@ class _HomeState extends State<Home> {
       
       bottomNavigationBar: CurvedNavigationBar(
         index: 0,
-        color:  Color.fromARGB(255, 75, 71, 68),
-        backgroundColor: Colors.blueGrey[50],
-        buttonBackgroundColor: Color.fromARGB(225, 192, 158, 112),
+        color:  Color.fromARGB(255, 27, 67, 50),
+        backgroundColor: Colors.white,
+        buttonBackgroundColor: Color.fromARGB(225, 27, 67, 50),
         height: 50,
         items: <Widget>[
           Icon(
