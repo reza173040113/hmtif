@@ -10,7 +10,7 @@ import '../HalamanUtama.dart';
 class DetailAspirasi extends StatefulWidget {
   // final DocumentSnapshot MyStudent;
   // DetailAspirasi({this.MyStudent});
-  final String name, deskripsi, documentId;
+  final String name, deskripsi, documentId, status;
   final int jumlahLike;
   DetailAspirasi({
     // @required this.isEdit,
@@ -18,6 +18,7 @@ class DetailAspirasi extends StatefulWidget {
     @required this.name,
     @required this.deskripsi,
     @required this.jumlahLike,
+    @required this.status,
   });
   @override
   _DetailAspirasiState createState() => _DetailAspirasiState();
@@ -27,7 +28,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
+    Size size = MediaQuery.of(context).size;
     var delay = 1.5;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 27, 67, 50),
@@ -35,137 +36,164 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
           centerTitle: false,
           backgroundColor: Colors.white,
           elevation: 0,
-          leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-            Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (BuildContext context) => new Aspirasi()));
-          })),
+          leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new Aspirasi()));
+              })),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Container(
-            //   height: 400,
-            //   child: Stack(
-            //     children: <Widget>[
-            //       Positioned(
-            //         top: -40,
-            //         height: 400,
-            //         width: width,
-            //         child: FadeAnimation(
-            //             1,
-            //             Container(
-            //               decoration: BoxDecoration(
-            //                   image: DecorationImage(
-            //                       image: AssetImage('img/background-1.png'),
-            //                       fit: BoxFit.fill)),
-            //             )),
-            //       ),
-            //       Positioned(
-            //         height: 400,
-            //         width: width + 20,
-            //         child: FadeAnimation(
-            //             1.3,
-            //             Container(
-            //               decoration: BoxDecoration(
-            //                   image: DecorationImage(
-            //                       image: AssetImage('img/background-2.png'),
-            //                       fit: BoxFit.fill)),
-            //             )),
-            //       ),
-            //       Positioned(
-            //         child: FadeAnimation(
-            //             1.6,
-            //             Container(
-            //               margin: EdgeInsets.only(top: 50),
-            //               child: Center(
-            //                 child: Text(
-            //                   "Detail Aspirasi dan Keluhan",
-            //                   style: TextStyle(
-            //                       color: Colors.white,
-            //                       fontSize: 40,
-            //                       fontWeight: FontWeight.bold),
-            //                 ),
-            //               ),
-            //             )),
-            //       )
-            //     ],
-            //   ),
-            // ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(40),
+                  )),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.symmetric(vertical: 0),
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Stack(children: <Widget>[
+                        Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Image.asset("img/orang.jpg"),
+                                  Center(
+                                    child: Text(
+                                      "Detail Aspirasi dan Keluhan",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  new Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 15, 0, 0)),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(widget.name,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(49, 39, 79, 1),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20)),
+                                      new Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(5, 0, 0, 0)),
+                                      Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.lightBlue,
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(5),
+                                                bottomRight: Radius.circular(5),
+                                                topLeft: Radius.circular(5),
+                                                topRight: Radius.circular(5),
+                                              )),
+                                          child: Text(widget.status,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 11)))
+                                    ],
+                                  ),
+                                  FadeAnimation(
+                                      1.5,
+                                      Row(
+                                        children: <Widget>[
+                                          new Text(
+                                            widget.jumlahLike.toString(),
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                          ),
+                                          new Text(
+                                            " mahasiswa telah menyetujui aspirasi dan keluhan ini",
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 10),
+                                          ),
+                                        ],
+                                      )),
+                                  new Padding(padding: EdgeInsets.all(3)),
+                                  FadeAnimation(
+                                      1.5,
+                                      Stack(
+                                        children: <Widget>[
+                                          Container(
+                                            width: 350,
+                                            height: 10,
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[200],
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                          ),
+                                          Material(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            child: AnimatedContainer(
+                                              height: 10,
+                                              width: 350 * 0.5,
+                                              duration:
+                                                  Duration(milliseconds: 500),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.lightGreen,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5)),
+                                            ),
+                                          )
+                                        ],
+                                      )),
+                                  new Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 10, 0, 0)),
+                                  FadeAnimation(
+                                      1.5,
+                                      Text(
+                                        "Deskripsi",
+                                        style: TextStyle(
+                                            color:
+                                                Color.fromRGBO(49, 39, 79, 1),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      )),
+                                  FadeAnimation(
+                                      1.5,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 10),
+                                        child: Text(
+                                          widget.deskripsi,
+                                          style: TextStyle(
+                                              color:
+                                                  Color.fromRGBO(49, 39, 79, 1),
+                                              fontSize: 12),
+                                        ),
+                                      )),
+                                ]))
+                      ]),
+                    )
+                  ]),
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    FadeAnimation(
-                        1.5,
-                        Text(
-                          widget.name,
-                          style: TextStyle(
-                              color: Color.fromRGBO(49, 39, 79, 1),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 40),
-                        )),
-                    new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-
-                    FadeAnimation(
-                        1.5,
-                        Row(
-                          children: <Widget>[
-                            new Text(
-                              widget.jumlahLike.toString(),
-                              style: TextStyle(color: Colors.green),
-                            ),
-                            new Text(
-                              " mahasiswa telah menyetujui aspirasi dan keluhan ini",
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 10),
-                            ),
-                          ],
-                        )),
-                    new Padding(padding: EdgeInsets.all(3)),
-                    FadeAnimation(
-                        1.5,
-                        Stack(
-                          children: <Widget>[
-                            Container(
-                              width: 350,
-                              height: 10,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(5)),
-                            ),
-                            Material(
-                              borderRadius: BorderRadius.circular(5),
-                              child: AnimatedContainer(
-                                height: 10,
-                                width: 350 * 0.5,
-                                duration: Duration(milliseconds: 500),
-                                decoration: BoxDecoration(
-                                    color: Colors.lightGreen,
-                                    borderRadius: BorderRadius.circular(5)),
-                              ),
-                            )
-                          ],
-                        )),
-                    new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                    FadeAnimation(
-                        1.5,
-                        Text(
-                          "Deskripsi",
-                          style: TextStyle(
-                              color: Color.fromRGBO(49, 39, 79, 1),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        )),
-                    new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-                    FadeAnimation(
-                        1.5,
-                        Text(
-                          widget.deskripsi,
-                          style: TextStyle(
-                              color: Color.fromRGBO(49, 39, 79, 1),
-                              fontSize: 12),
-                        )),
+                    //
                     new Padding(padding: EdgeInsets.fromLTRB(0, 20, 0, 0)),
 
                     FadeAnimation(
@@ -175,6 +203,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                             String documentId = widget.documentId;
                             String name = widget.name;
                             String deskripsi = widget.deskripsi;
+                            String status = widget.status;
 
                             int jumlahLike =
                                 int.parse(widget.jumlahLike.toString());
@@ -186,6 +215,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                               "name": name,
                               "deskripsi": deskripsi,
                               "jumlahLike": jumlahLike + 1,
+                              "status":status,
                             };
 
                             documentReference
@@ -198,7 +228,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: Text(
-                                        'Terimakasih sudah menyetujui aspirasi dan keluhan ini,silahkan liat aspirasi dan keluhan yang lain'),
+                                        'Terimakasih sudah menyetujui aspirasi dan keluhan ini'),
                                     actions: <Widget>[
                                       FlatButton(
                                         child: Text('OK'),
@@ -219,35 +249,23 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 gradient: LinearGradient(colors: [
-                                  Color.fromRGBO(143, 148, 251, 1),
-                                  Color.fromRGBO(143, 148, 251, .6),
+                                  Color.fromARGB(255, 255, 190, 11)
+                                      .withOpacity(0.9),
+                                  Color.fromARGB(255, 255, 190, 11)
+                                      .withOpacity(0.9),
                                 ])),
                             child: Center(
                               child: Text(
                                 "Setuju",
                                 style: TextStyle(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
                           ),
                         )),
-                    // FadeAnimation(
-                    //     1.5,
-                    //     Text(
-                    //       "Deskripsi",
-                    //       style: TextStyle(
-                    //           color: Color.fromRGBO(49, 39, 79, 1),
-                    //           fontWeight: FontWeight.bold,
-                    //           fontSize: 20),
-                    //     )),
                   ]),
             ),
-            // FadeAnimation(
-            //     1.8,
-            //     Card(
-            //         child: ListTile(
-            //             title: Text(widget.MyStudent.data()["name"])))),
           ],
         ),
       ),

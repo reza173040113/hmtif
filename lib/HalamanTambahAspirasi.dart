@@ -25,7 +25,7 @@ class TambahAspirasi extends StatefulWidget {
 }
 
 class _TambahAspirasiState extends State<TambahAspirasi> {
-  String name, deskripsi;
+  String name, deskripsi,status="belum diproses";
   int jumlahLike;
   getAspirasiName(name) {
     this.name = name;
@@ -51,6 +51,7 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
       "name": name,
       "deskripsi": deskripsi,
       "jumlahLike": 0,
+      "status":status,
     };
 
     documentReference.setData(aspirasi).whenComplete(() {

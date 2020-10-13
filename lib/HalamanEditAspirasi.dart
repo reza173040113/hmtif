@@ -19,7 +19,7 @@ Future<void> main() async {
 }
 
 class EditAspirasi extends StatefulWidget {
-  final String name, deskripsi, documentId;
+  final String name, deskripsi, documentId, status;
   // final bool isEdit;
 
   final int jumlahLike;
@@ -29,8 +29,9 @@ class EditAspirasi extends StatefulWidget {
     @required this.name,
     @required this.deskripsi,
     @required this.jumlahLike,
+    @required this.status,
   });
-  
+
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   @override
   _EditAspirasiState createState() => _EditAspirasiState();
@@ -59,14 +60,11 @@ class _EditAspirasiState extends State<EditAspirasi> {
 
   @override
   void initState() {
-    
     super.initState();
-    
+
     controllerName.text = widget.name.toString();
     controllerDeskripsi.text = widget.deskripsi.toString();
-   
   }
-
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,13 +107,11 @@ class _EditAspirasiState extends State<EditAspirasi> {
                     },
                   ),
                 ),
-               
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      
                       RaisedButton(
                           color: Colors.yellow,
                           shape: RoundedRectangleBorder(
@@ -131,16 +127,16 @@ class _EditAspirasiState extends State<EditAspirasi> {
                             String name = controllerName.text;
                             String deskripsi = controllerDeskripsi.text;
                             int jumlahLike = widget.jumlahLike;
-                            
+                            String status = widget.status;
                             DocumentReference documentReference =
                                 FirebaseFirestore.instance
                                     .collection("Aspirasi")
-                                    .document(
-                                        documentId);
+                                    .document(documentId);
                             Map<String, dynamic> students = {
                               "name": name,
                               "deskripsi": deskripsi,
                               "jumlahLike": jumlahLike,
+                              "status": status,
                             };
 
                             documentReference
@@ -148,13 +144,10 @@ class _EditAspirasiState extends State<EditAspirasi> {
                                 .whenComplete(() {
                               print("$name updated");
                             });
-                           
                           }),
-                      
                     ],
                   ),
                 ),
-                
               ]),
             ),
           ),

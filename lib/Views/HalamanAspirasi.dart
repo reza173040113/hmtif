@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
 
-import '../HalamanDetailAspirasi.dart';
+import 'HalamanDetailAspirasi.dart';
 import '../HalamanEditAspirasi.dart';
 import '../HalamanTambahAspirasi.dart';
 
@@ -92,195 +92,166 @@ class Aspirasi extends StatelessWidget {
                           Firestore.instance.collection("Aspirasi").snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return SingleChildScrollView(
+                          return ListView.builder(
                             scrollDirection: Axis.vertical,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.documents.length,
-                              itemBuilder: (context, index) {
-                                // Firebase.initializeApp();
-                                DocumentSnapshot documentSnapshot =
-                                    snapshot.data.documents[index];
-                                Map<String, dynamic> task =
-                                    documentSnapshot.data();
-                                if (documentSnapshot.data()['name'] == "a") {
-                                  return FadeAnimation(
-                                      1.8,
-                                      Card(
-                                        margin: EdgeInsets.all(10),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        color: Colors.white.withOpacity(0.8),
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: ListTile(
-                                              title: Text(
-                                                  documentSnapshot
-                                                      .data()['name'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  "Like " +
-                                                      documentSnapshot
-                                                          .data()['jumlahLike']
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.black)),
-                                              // leading: CircleAvatar(
-                                              //     child: Image(
-                                              //   image: AssetImage('img/akun.png'),
-                                              // )),
-                                              trailing: PopupMenuButton(
-                                                itemBuilder:
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot documentSnapshot =
+                                  snapshot.data.documents[index];
+                              Map<String, dynamic> task =
+                                  documentSnapshot.data();
+                              if (documentSnapshot.data()['name'] == "a") {
+                                return FadeAnimation(
+                                  1.8,
+                                  Card(
+                                    margin: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    color: Colors.white.withOpacity(0.8),
+                                    child: ListTile(
+                                        title: Text(
+                                            documentSnapshot.data()['name'],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold)),
+                                        subtitle: Text(
+                                            "Like " +
+                                                documentSnapshot
+                                                    .data()['jumlahLike']
+                                                    .toString(),
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                        trailing: PopupMenuButton(
+                                          itemBuilder: (BuildContext context) {
+                                            return List<
+                                                PopupMenuEntry<String>>()
+                                              ..add(PopupMenuItem<String>(
+                                                value: 'edit',
+                                                child: Text('Edit'),
+                                              ))
+                                              ..add(PopupMenuItem<String>(
+                                                value: 'delete',
+                                                child: Text('Delete'),
+                                              ));
+                                          },
+                                          onSelected: (String value) async {
+                                            if (value == 'edit') {
+                                              bool result =
+                                                  await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                                  return EditAspirasi(
+                                                    documentId: documentSnapshot
+                                                        .documentID,
+                                                    name: task['name'],
+                                                    deskripsi:
+                                                        task['deskripsi'],
+                                                    jumlahLike:
+                                                        task['jumlahLike'],
+                                                    status: task['status'],
+                                                  );
+                                                }),
+                                              );
+                                            } else if (value == 'delete') {
+                                              showDialog(
+                                                context: context,
+                                                builder:
                                                     (BuildContext context) {
-                                                  return List<
-                                                      PopupMenuEntry<String>>()
-                                                    ..add(PopupMenuItem<String>(
-                                                      value: 'edit',
-                                                      child: Text('Edit'),
-                                                    ))
-                                                    ..add(PopupMenuItem<String>(
-                                                      value: 'delete',
-                                                      child: Text('Delete'),
-                                                    ));
-                                                },
-                                                onSelected:
-                                                    (String value) async {
-                                                  if (value == 'edit') {
-                                                    bool result =
-                                                        await Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) {
-                                                        return EditAspirasi(
-                                                          documentId:
-                                                              documentSnapshot
-                                                                  .documentID,
-                                                          name: task['name'],
-                                                          deskripsi:
-                                                              task['deskripsi'],
-                                                          jumlahLike: task[
-                                                              'jumlahLike'],
-                                                        );
-                                                      }),
-                                                    );
-                                                  } else if (value ==
-                                                      'delete') {
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return AlertDialog(
-                                                          title: Text(
-                                                              'Yakin mau hapus?'),
-                                                          actions: <Widget>[
-                                                            FlatButton(
-                                                              child:
-                                                                  Text('Tidak'),
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                            ),
-                                                            FlatButton(
-                                                              child: Text('Ya'),
-                                                              onPressed: () {
-                                                                documentSnapshot
-                                                                    .reference
-                                                                    .delete();
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                            ),
-                                                          ],
-                                                        );
-                                                      },
-                                                    );
-                                                  }
-                                                },
-                                                child: Icon(
-                                                  Icons.more_vert,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              isThreeLine: true,
-                                              onTap: () async {
-                                                bool result =
-                                                    await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                    return DetailAspirasi(
-                                                      documentId:
+                                                  return AlertDialog(
+                                                    title: Text(
+                                                        'Yakin mau hapus?'),
+                                                    actions: <Widget>[
+                                                      FlatButton(
+                                                        child: Text('Tidak'),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
+                                                      FlatButton(
+                                                        child: Text('Ya'),
+                                                        onPressed: () {
                                                           documentSnapshot
-                                                              .documentID,
-                                                      name: task['name'],
-                                                      deskripsi:
-                                                          task['deskripsi'],
-                                                      jumlahLike:
-                                                          task['jumlahLike'],
-                                                    );
-                                                  }),
-                                                );
-                                              }),
+                                                              .reference
+                                                              .delete();
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                          child: Icon(
+                                            Icons.more_vert,
+                                            color: Colors.black,
+                                          ),
                                         ),
-                                      ));
-                                } else {
-                                  return FadeAnimation(
-                                      1.8,
-                                      Card(
-                                        margin: EdgeInsets.all(10),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        color: Colors.white.withOpacity(0.8),
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: ListTile(
-                                              title: Text(
-                                                  documentSnapshot
-                                                      .data()['name'],
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
-                                              subtitle: Text(
-                                                  "Like " +
-                                                      documentSnapshot
-                                                          .data()['jumlahLike']
-                                                          .toString(),
-                                                  style: TextStyle(
-                                                      color: Colors.black)),
-                                              onTap: () async {
-                                                bool result =
-                                                    await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) {
-                                                    return DetailAspirasi(
-                                                      documentId:
-                                                          documentSnapshot
-                                                              .documentID,
-                                                      name: task['name'],
-                                                      deskripsi:
-                                                          task['deskripsi'],
-                                                      jumlahLike:
-                                                          task['jumlahLike'],
-                                                    );
-                                                  }),
-                                                );
-                                              }),
-                                        ),
-                                      ));
-                                }
-                              },
-                            ),
+                                        onTap: () async {
+                                          bool result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                              return DetailAspirasi(
+                                                documentId:
+                                                    documentSnapshot.documentID,
+                                                name: task['name'],
+                                                deskripsi: task['deskripsi'],
+                                                jumlahLike: task['jumlahLike'],
+                                                status: task['status'],
+                                              );
+                                            }),
+                                          );
+                                        }),
+                                  ),
+                                );
+                              } else {
+                                return FadeAnimation(
+                                  1.8,
+                                  Card(
+                                    margin: EdgeInsets.all(10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    color: Colors.white.withOpacity(0.8),
+                                    child: ListTile(
+                                        title: Text(
+                                            documentSnapshot.data()['name'],
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold)),
+                                        subtitle: Text(
+                                            "Like " +
+                                                documentSnapshot
+                                                    .data()['jumlahLike']
+                                                    .toString(),
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                        onTap: () async {
+                                          bool result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                              return DetailAspirasi(
+                                                documentId:
+                                                    documentSnapshot.documentID,
+                                                name: task['name'],
+                                                deskripsi: task['deskripsi'],
+                                                jumlahLike: task['jumlahLike'],
+                                                status: task['status'],
+                                              );
+                                            }),
+                                          );
+                                        }),
+                                  ),
+                                );
+                              }
+                            },
                           );
                         } else {
                           return Container();
