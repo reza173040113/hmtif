@@ -169,10 +169,7 @@ class Aspirasi extends StatelessWidget {
                                                     .toString(),
                                             style:
                                                 TextStyle(color: Colors.black)),
-                                        // leading: CircleAvatar(
-                                        //     child: Image(
-                                        //   image: AssetImage('img/akun.png'),
-                                        // )),
+                                        
                                         trailing: PopupMenuButton(
                                           itemBuilder: (BuildContext context) {
                                             return List<

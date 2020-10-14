@@ -30,8 +30,9 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
     final width = MediaQuery.of(context).size.width;
     Size size = MediaQuery.of(context).size;
     var delay = 1.5;
+    final progress = widget.jumlahLike;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 27, 67, 50),
+      backgroundColor: Color.fromARGB(200, 27, 67, 50),
       appBar: AppBar(
           centerTitle: false,
           backgroundColor: Colors.white,
@@ -43,7 +44,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
               ),
               onPressed: () {
                 Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => new Aspirasi()));
+                    builder: (BuildContext context) => new Home()));
               })),
       body: SingleChildScrollView(
         child: Column(
@@ -78,13 +79,14 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                       "Detail Aspirasi dan Keluhan",
                                       style: TextStyle(
                                           color: Colors.black,
-                                          fontSize: 25,
+                                          fontSize: 27,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                   new Padding(
                                       padding:
                                           EdgeInsets.fromLTRB(0, 15, 0, 0)),
+                                          
                                   Row(
                                     children: <Widget>[
                                       Text(widget.name,
@@ -95,22 +97,25 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                               fontSize: 20)),
                                       new Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(5, 0, 0, 0)),
-                                      Container(
-                                          decoration: BoxDecoration(
-                                              color: Colors.lightBlue,
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(5),
-                                                bottomRight: Radius.circular(5),
-                                                topLeft: Radius.circular(5),
-                                                topRight: Radius.circular(5),
-                                              )),
-                                          child: Text(widget.status,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 11)))
+                                              EdgeInsets.fromLTRB(5, 10, 0, 0)),
+                                      //  Container(
+                                      //     decoration: BoxDecoration(
+                                      //         color: Colors.lightBlue,
+                                      //         borderRadius: BorderRadius.only(
+                                      //           bottomLeft: Radius.circular(5),
+                                      //           bottomRight: Radius.circular(5),
+                                      //           topLeft: Radius.circular(5),
+                                      //           topRight: Radius.circular(5),
+                                      //         )),
+                                      //     child: Text(widget.status,
+                                      //         style: TextStyle(
+                                      //             color: Colors.white,
+                                      //             fontSize: 11)))
                                     ],
                                   ),
+                                  new Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 0)),
                                   FadeAnimation(
                                       1.5,
                                       Row(
@@ -118,7 +123,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                           new Text(
                                             widget.jumlahLike.toString(),
                                             style:
-                                                TextStyle(color: Colors.green),
+                                                TextStyle(color: Colors.green,fontWeight: FontWeight.bold ),
                                           ),
                                           new Text(
                                             " mahasiswa telah menyetujui aspirasi dan keluhan ini",
@@ -146,9 +151,9 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                                 BorderRadius.circular(5),
                                             child: AnimatedContainer(
                                               height: 10,
-                                              width: 350 * 0.5,
+                                              width: progress*1.0,
                                               duration:
-                                                  Duration(milliseconds: 500),
+                                                  Duration(milliseconds: 100),
                                               decoration: BoxDecoration(
                                                   color: Colors.lightGreen,
                                                   borderRadius:
@@ -174,7 +179,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                       1.5,
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 10),
+                                            vertical: 5, horizontal: 10),
                                         child: Text(
                                           widget.deskripsi,
                                           style: TextStyle(

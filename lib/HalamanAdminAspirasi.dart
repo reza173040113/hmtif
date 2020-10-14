@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hmtif/Views/admin/HalamanEditAspirasiAdmin.dart';
 import 'Animation/FadeAnimation.dart';
 import 'HalamanDetailAspirasi.dart';
 import 'HalamanEditAspirasi.dart';
@@ -55,8 +56,9 @@ class AdminAspirasi extends StatelessWidget {
             child: new Column(
               children: <Widget>[
                 StreamBuilder(
-                  stream:
-                      Firestore.instance.collection("Aspirasi").snapshots(),
+                  stream: Firestore.instance
+                      .collection("AspirasiMahasiswa")
+                      .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return SingleChildScrollView(
@@ -66,7 +68,6 @@ class AdminAspirasi extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, index) {
-                            
                             DocumentSnapshot documentSnapshot =
                                 snapshot.data.documents[index];
                             Map<String, dynamic> task = documentSnapshot.data();
@@ -77,67 +78,141 @@ class AdminAspirasi extends StatelessWidget {
                                   child: ListTile(
                                     title:
                                         Text(documentSnapshot.data()['name']),
-                                    subtitle: Text("Like " +
-                                        documentSnapshot.data()['jumlahLike'].toString()),
+                                    // subtitle: Text("Like " +
+                                    //     documentSnapshot
+                                    //         .data()['jumlahLike']
+                                    //         .toString()),
                                     leading: CircleAvatar(
                                         child: Image(
                                       image: AssetImage('img/akun.png'),
                                     )),
-                                    trailing: Wrap(
-                                      spacing: 12,
-                                      children: <Widget>[
-                                        new IconButton(
-                                            icon: new Icon(Icons.edit),
-                                            onPressed: () async {
-                                              
-                                              bool result = await Navigator.push(context, MaterialPageRoute(builder: (context){
-                                                return EditAspirasi(
-                                                  documentId: documentSnapshot.documentID,
-                                                  name: task['name'],
-                                                  deskripsi: task['deskripsi'],
-                                                  jumlahLike: task['jumlahLike'],
-                                                );
-                                              }
-                                              ),
+                                    trailing: PopupMenuButton(
+                                      itemBuilder: (BuildContext context) {
+                                        return List<PopupMenuEntry<String>>()
+                                          ..add(PopupMenuItem<String>(
+                                            value: 'edit',
+                                            child: Text('Edit'),
+                                          ))
+                                          ..add(PopupMenuItem<String>(
+                                            value: 'delete',
+                                            child: Text('Delete'),
+                                          ))
+                                          ..add(PopupMenuItem<String>(
+                                            value: 'post',
+                                            child: Text('Ubah Status'),
+                                          ));
+                                      },
+                                      onSelected: (String value) async {
+                                        if (value == 'edit') {
+                                          bool result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                              return EditAspirasiAdmin(
+                                                documentId:
+                                                    documentSnapshot.documentID,
+                                                name: task['name'],
+                                                deskripsi: task['deskripsi'],
+                                                jumlahLike: task['jumlahLike'],
                                               );
-                                            }
-                                            ),
-                                        new IconButton(
-                                            icon: new Icon(Icons.delete),
-                                            onPressed: () {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        'Yakin Mau Hapus?'),
-                                                    actions: <Widget>[
-                                                      FlatButton(
-                                                        child: Text('No'),
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                      FlatButton(
-                                                        child: Text('Delete'),
-                                                        onPressed: () {
+                                            }),
+                                          );
+                                        } else if (value == 'post') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(documentSnapshot
+                                                    .data()['name']),
+                                                content: Text(documentSnapshot
+                                                    .data()['deskripsi']),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Post'),
+                                                    onPressed: () {
+                                                      String documentId =
                                                           documentSnapshot
-                                                              .reference
-                                                              .delete();
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
+                                                              .documentID;
+                                                      String name =
+                                                          documentSnapshot
+                                                              .data()['name'];
+                                                      String deskripsi =
+                                                          documentSnapshot
+                                                                  .data()[
+                                                              'deskripsi'];
+
+                                                      DocumentReference
+                                                          documentReference =
+                                                          FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  "Aspirasi")
+                                                              .document(
+                                                                  documentId);
+                                                      Map<String, dynamic>
+                                                          students = {
+                                                        "name": name,
+                                                        "deskripsi": deskripsi,
+                                                        "jumlahLike": 0,
+                                                      };
+
+                                                      documentReference
+                                                          .setData(students)
+                                                          .whenComplete(() {
+                                                        print("$name created");
+                                                      });
+                                                      return AlertDialog(
+                                                title: Text('Aspirasi dan keluhan berhasil dipost!!!'),
+                                                actions: <Widget>[
+                                                  
+                                                  FlatButton(
+                                                    child: Text('Ok'),
+                                                    onPressed: () {
+                                                      documentSnapshot.reference
+                                                          .delete();
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
                                               );
-                                            })
-                                      ],
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        } else if (value == 'delete') {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Yakin mau hapus?'),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Tidak'),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  FlatButton(
+                                                    child: Text('Ya'),
+                                                    onPressed: () {
+                                                      documentSnapshot.reference
+                                                          .delete();
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
+                                      },
+                                      child: Icon(
+                                        Icons.more_vert,
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                    isThreeLine: true,
                                     // onTap: () => navigateToDetail(context,
                                     //     snapshot.data.documents[index]),
                                   ),

@@ -44,14 +44,12 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
   Future<DocumentSnapshot> createData() async {
     await Firebase.initializeApp();
     DocumentReference documentReference =
-        Firestore.instance.collection("Aspirasi").document();
+        Firestore.instance.collection("AspirasiMahasiswa").document();
 
     //createMap
     Map<String, dynamic> aspirasi = {
       "name": name,
       "deskripsi": deskripsi,
-      "jumlahLike": 0,
-      "status":status,
     };
 
     documentReference.setData(aspirasi).whenComplete(() {
