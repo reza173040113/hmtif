@@ -24,6 +24,7 @@ dependencies:
   cloud_firestore:
   firebase_core :
   firebase_auth :
+  firebase_dynamic_links: ^0.5.1
   provider :
   curved_navigation_bar: ^0.3.3
   simple_animations: ^1.3.3

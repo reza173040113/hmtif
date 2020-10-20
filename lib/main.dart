@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hmtif/HalamanAdminAspirasi.dart';
 
 import 'AuthenticationServices.dart';
-import 'HalamanAdmin.dart';
 import 'HalamanRegister.dart';
 import 'HalamanUtama.dart';
+import 'Views/admin/HalamanAdminAspirasi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

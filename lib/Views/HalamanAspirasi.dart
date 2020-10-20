@@ -24,10 +24,35 @@ Future<void> main() async {
   ));
 }
 
-class Aspirasi extends StatelessWidget {
+class Aspirasi extends StatefulWidget {
+  @override
+  _AspirasiState createState() => _AspirasiState();
+}
+
+class _AspirasiState extends State<Aspirasi> {
+  final controller = ScrollController();
+  double offset = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(onScroll);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  void onScroll() {
+    setState(() {
+      offset = (controller.hasClients) ? controller.offset : 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var child2 = null;
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 27, 67, 50),
       resizeToAvoidBottomPadding: false,
@@ -87,339 +112,141 @@ class Aspirasi extends StatelessWidget {
                     )),
                 child: Stack(
                   children: <Widget>[
-                    StreamBuilder(
-                      stream:
-                          Firestore.instance.collection("Aspirasi").snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (context, index) {
-                              DocumentSnapshot documentSnapshot =
-                                  snapshot.data.documents[index];
-                              Map<String, dynamic> task =
-                                  documentSnapshot.data();
-                              if (documentSnapshot.data()['name'] == "a") {
+                    SingleChildScrollView(
+                      controller: controller,
+                      child: StreamBuilder(
+                        stream: Firestore.instance
+                            .collection("Aspirasi")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return ListView.builder(
+                                                controller : controller,
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.documents.length,
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot documentSnapshot =
+                                    snapshot.data.documents[index];
+                                Map<String, dynamic> task =
+                                    documentSnapshot.data();
                                 return FadeAnimation(
                                   1.8,
-                                  Card(
-                                    margin: EdgeInsets.all(10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    color: Colors.white.withOpacity(0.8),
-                                    child: ListTile(
-                                        title: Text(
-                                            documentSnapshot.data()['name'],
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold)),
-                                        subtitle: Text(
-                                            "Like " +
-                                                documentSnapshot
-                                                    .data()['jumlahLike']
-                                                    .toString(),
-                                            style:
-                                                TextStyle(color: Colors.black)),
-                                        trailing: PopupMenuButton(
-                                          itemBuilder: (BuildContext context) {
-                                            return List<
-                                                PopupMenuEntry<String>>()
-                                              ..add(PopupMenuItem<String>(
-                                                value: 'edit',
-                                                child: Text('Edit'),
-                                              ))
-                                              ..add(PopupMenuItem<String>(
-                                                value: 'delete',
-                                                child: Text('Delete'),
-                                              ));
-                                          },
-                                          onSelected: (String value) async {
-                                            if (value == 'edit') {
-                                              bool result =
-                                                  await Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) {
-                                                  return EditAspirasi(
-                                                    documentId: documentSnapshot
-                                                        .documentID,
-                                                    name: task['name'],
-                                                    deskripsi:
-                                                        task['deskripsi'],
-                                                    jumlahLike:
-                                                        task['jumlahLike'],
-                                                    status: task['status'],
-                                                  );
-                                                }),
-                                              );
-                                            } else if (value == 'delete') {
-                                              showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return AlertDialog(
-                                                    title: Text(
-                                                        'Yakin mau hapus?'),
-                                                    actions: <Widget>[
-                                                      FlatButton(
-                                                        child: Text('Tidak'),
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
+                                  GestureDetector(
+                                    onTap: () async {
+                                      bool result = await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return DetailAspirasi(
+                                            documentId:
+                                                documentSnapshot.documentID,
+                                            name: task['name'],
+                                            deskripsi: task['deskripsi'],
+                                            jumlahLike: task['jumlahLike'],
+                                            status: task['status'],
+                                          );
+                                        }),
+                                      );
+                                    },
+                                    child: InkWell(
+                                      child: Container(
+                                        margin: EdgeInsets.only(left:10,right:10,top:5),
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(bottom: 10),
+                                          child: Container(
+                                            child: SizedBox(
+                                              height: 50,
+                                              child: Stack(
+                                                alignment: Alignment.centerLeft,
+                                                children: <Widget>[
+                                                  Container(
+                                                    height: 50,
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      color: Colors.white,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          offset: Offset(0, 8),
+                                                          blurRadius: 24,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    left: 10,
+                                                    child: Container(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 20,
+                                                              vertical: 15),
+                                                      height: 50,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width -
+                                                              40,
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                documentSnapshot
+                                                                        .data()[
+                                                                    'name'], style:TextStyle(fontWeight:FontWeight.bold)
+                                                              ),
+                                                              Text(
+                                                                "Like " +
+                                                                    documentSnapshot
+                                                                        .data()[
+                                                                            'jumlahLike']
+                                                                        .toString(),
+                                                               
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 12,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
                                                       ),
-                                                      FlatButton(
-                                                        child: Text('Ya'),
-                                                        onPressed: () {
-                                                          documentSnapshot
-                                                              .reference
-                                                              .delete();
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          },
-                                          child: Icon(
-                                            Icons.more_vert,
-                                            color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                        onTap: () async {
-                                          bool result = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                              return DetailAspirasi(
-                                                documentId:
-                                                    documentSnapshot.documentID,
-                                                name: task['name'],
-                                                deskripsi: task['deskripsi'],
-                                                jumlahLike: task['jumlahLike'],
-                                                status: task['status'],
-                                              );
-                                            }),
-                                          );
-                                        }),
-                                  ),
-                                );
-                              } else {
-                                return FadeAnimation(
-                                  1.8,
-                                  Card(
-                                    margin: EdgeInsets.all(10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
+                                      ),
                                     ),
-                                    color: Colors.white.withOpacity(0.8),
-                                    child: ListTile(
-                                        title: Text(
-                                            documentSnapshot.data()['name'],
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold)),
-                                        subtitle: Text(
-                                            "Like " +
-                                                documentSnapshot
-                                                    .data()['jumlahLike']
-                                                    .toString(),
-                                            style:
-                                                TextStyle(color: Colors.black)),
-                                        onTap: () async {
-                                          bool result = await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                              return DetailAspirasi(
-                                                documentId:
-                                                    documentSnapshot.documentID,
-                                                name: task['name'],
-                                                deskripsi: task['deskripsi'],
-                                                jumlahLike: task['jumlahLike'],
-                                                status: task['status'],
-                                              );
-                                            }),
-                                          );
-                                        }),
                                   ),
                                 );
-                              }
-                            },
-                          );
-                        } else {
-                          return Container();
-                        }
-                      },
+                              },
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
                     ),
                   ],
                 ),
               ),
 
-              // StreamBuilder(
-              //   stream: Firestore.instance.collection("Aspirasi").snapshots(),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.hasData) {
-              //       return SingleChildScrollView(
-              //         scrollDirection: Axis.vertical,
-              //         child: ListView.builder(
-              //           scrollDirection: Axis.vertical,
-              //           shrinkWrap: true,
-              //           itemCount: snapshot.data.documents.length,
-              //           itemBuilder: (context, index) {
-              //             // Firebase.initializeApp();
-              //             DocumentSnapshot documentSnapshot =
-              //                 snapshot.data.documents[index];
-              //             Map<String, dynamic> task = documentSnapshot.data();
-              //             if (documentSnapshot.data()['name'] == "a") {
-              //               return FadeAnimation(
-              //                   1.8,
-              //                   Card(
-              //                     color: Colors.white.withOpacity(0.8),
-              //                     child: ListTile(
-              //                         title: Text(
-              //                             documentSnapshot.data()['name'],
-              //                             style: TextStyle(
-              //                                 color: Colors.black,
-              //                                 fontWeight: FontWeight.bold)),
-              //                         subtitle: Text(
-              //                             "Like " +
-              //                                 documentSnapshot
-              //                                     .data()['jumlahLike']
-              //                                     .toString(),
-              //                             style:
-              //                                 TextStyle(color: Colors.black)),
-              //                         // leading: CircleAvatar(
-              //                         //     child: Image(
-              //                         //   image: AssetImage('img/akun.png'),
-              //                         // )),
-              //                         trailing: PopupMenuButton(
-              //                           itemBuilder: (BuildContext context) {
-              //                             return List<PopupMenuEntry<String>>()
-              //                               ..add(PopupMenuItem<String>(
-              //                                 value: 'edit',
-              //                                 child: Text('Edit'),
-              //                               ))
-              //                               ..add(PopupMenuItem<String>(
-              //                                 value: 'delete',
-              //                                 child: Text('Delete'),
-              //                               ));
-              //                           },
-              //                           onSelected: (String value) async {
-              //                             if (value == 'edit') {
-              //                               bool result = await Navigator.push(
-              //                                 context,
-              //                                 MaterialPageRoute(
-              //                                     builder: (context) {
-              //                                   return EditAspirasi(
-              //                                     documentId: documentSnapshot
-              //                                         .documentID,
-              //                                     name: task['name'],
-              //                                     deskripsi: task['deskripsi'],
-              //                                     jumlahLike:
-              //                                         task['jumlahLike'],
-              //                                   );
-              //                                 }),
-              //                               );
-              //                             } else if (value == 'delete') {
-              //                               showDialog(
-              //                                 context: context,
-              //                                 builder: (BuildContext context) {
-              //                                   return AlertDialog(
-              //                                     title:
-              //                                         Text('Yakin mau hapus?'),
-              //                                     actions: <Widget>[
-              //                                       FlatButton(
-              //                                         child: Text('Tidak'),
-              //                                         onPressed: () {
-              //                                           Navigator.pop(context);
-              //                                         },
-              //                                       ),
-              //                                       FlatButton(
-              //                                         child: Text('Ya'),
-              //                                         onPressed: () {
-              //                                           documentSnapshot
-              //                                               .reference
-              //                                               .delete();
-              //                                           Navigator.pop(context);
-              //                                         },
-              //                                       ),
-              //                                     ],
-              //                                   );
-              //                                 },
-              //                               );
-              //                             }
-              //                           },
-              //                           child: Icon(
-              //                             Icons.more_vert,
-              //                             color: Colors.white,
-              //                           ),
-              //                         ),
-              //                         isThreeLine: true,
-              //                         onTap: () async {
-              //                           bool result = await Navigator.push(
-              //                             context,
-              //                             MaterialPageRoute(builder: (context) {
-              //                               return DetailAspirasi(
-              //                                 documentId:
-              //                                     documentSnapshot.documentID,
-              //                                 name: task['name'],
-              //                                 deskripsi: task['deskripsi'],
-              //                                 jumlahLike: task['jumlahLike'],
-              //                               );
-              //                             }),
-              //                           );
-              //                         }),
-              //                   ));
-              //             } else {
-              //               return FadeAnimation(
-              //                   1.8,
-              //                   Card(
-              //                     color: Colors.white.withOpacity(0.8),
-              //                     child: ListTile(
-              //                         title: Text(
-              //                             documentSnapshot.data()['name'],
-              //                             style: TextStyle(
-              //                                 color: Colors.black,
-              //                                 fontWeight: FontWeight.bold)),
-              //                         subtitle: Text(
-              //                             "Like " +
-              //                                 documentSnapshot
-              //                                     .data()['jumlahLike']
-              //                                     .toString(),
-              //                             style:
-              //                                 TextStyle(color: Colors.black)),
-              //                         onTap: () async {
-              //                           bool result = await Navigator.push(
-              //                             context,
-              //                             MaterialPageRoute(builder: (context) {
-              //                               return DetailAspirasi(
-              //                                 documentId:
-              //                                     documentSnapshot.documentID,
-              //                                 name: task['name'],
-              //                                 deskripsi: task['deskripsi'],
-              //                                 jumlahLike: task['jumlahLike'],
-              //                               );
-              //                             }),
-              //                           );
-              //                         }),
-              //                   ));
-              //             }
-              //           },
-              //         ),
-              //       );
-              //     } else {
-              //       return Container();
-              //     }
-              //   },
-              // ),
-              // new Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
+             
             ],
           ),
         ),
@@ -427,3 +254,5 @@ class Aspirasi extends StatelessWidget {
     );
   }
 }
+
+

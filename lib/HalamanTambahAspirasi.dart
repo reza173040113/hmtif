@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hmtif/HalamanUtama.dart';
 
 import 'DatabaseManager.dart';
+import 'Views/HalamanAspirasi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +27,7 @@ class TambahAspirasi extends StatefulWidget {
 }
 
 class _TambahAspirasiState extends State<TambahAspirasi> {
-  String name, deskripsi,status="belum diproses";
+  String name, deskripsi, status = "belum diproses";
   int jumlahLike;
   getAspirasiName(name) {
     this.name = name;
@@ -34,8 +36,6 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
   getAspirasiDeskripsi(deskripsi) {
     this.deskripsi = deskripsi;
   }
-
- 
 
   getAspirasiLike(jumlahLike) {
     this.jumlahLike = int.parse(jumlahLike);
@@ -57,15 +57,10 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
     });
   }
 
- 
-
   @override
   void initState() {
-    
     super.initState();
   }
-
-  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +101,6 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                     },
                   ),
                 ),
-                
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -119,13 +113,53 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                           child: Text("Create"),
                           textColor: Colors.white,
                           onPressed: () {
-                            createData();
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(
+                                      "Yakin ingin menyampaikan aspirasi ini?"),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('Ya'),
+                                      onPressed: () {
+                                        createData();
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                    'Aspirasi dan keluhan berhasil ditambahkan!!!'),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Ok'),
+                                                    onPressed: () {
+                                                      Navigator.of(context).push(
+                                                          new MaterialPageRoute(
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  new Home()));
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                    ),
+                                    FlatButton(
+                                      child: Text('Tidak'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           }),
-                      
                     ],
                   ),
                 ),
-               
               ]),
             ),
           ),

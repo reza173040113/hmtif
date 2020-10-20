@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hmtif/HalamanAdminAspirasi.dart';
 
 import 'AuthenticationServices.dart';
-import 'HalamanAdmin.dart';
-import 'HalamanAdminAspirasi.dart';
+// import 'HalamanAdmin.dart';
 import 'HalamanRegister.dart';
+import 'HalamanUtama.dart';
+import 'Views/admin/HalamanAdminAspirasi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +16,8 @@ Future<void> main() async {
     initialRoute: '/login',
     routes: {
       '/login': (context) => LoginScreen(),
-      '/admin' : (context) => AdminAspirasi(),
+      '/admin': (context) => AdminAspirasi(),
+      '/user': (context) => Home(),
     },
   ));
 }
@@ -109,6 +112,32 @@ class _LoginScreenState extends State<LoginScreen> {
                               if (_key.currentState.validate()) {
                                 signInUser();
                               }
+                            },
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FlatButton(
+                            child: Text('Login Admin'),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/admin');
+                            },
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FlatButton(
+                            child: Text('Login User'),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/user');
                             },
                             color: Colors.white,
                           ),
