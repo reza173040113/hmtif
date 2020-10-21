@@ -54,6 +54,7 @@ class _PostinganAdminState extends State<PostinganAdmin> {
       resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text("Halaman Postingan Admin"),
+          backgroundColor:Color.fromARGB(237, 8, 28, 21) ,
         ),
         drawer: Drawer(
           child: ListView(
@@ -93,10 +94,27 @@ class _PostinganAdminState extends State<PostinganAdmin> {
         ),
       body: SingleChildScrollView(
         child: new Container(
-          margin: EdgeInsets.all(10),
+          height: MediaQuery.of(context).size.height,
+          decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromARGB(237, 8, 28, 21),
+              Color.fromARGB(255, 116, 198, 157)
+            ],
+          )),
             child: new Column(
           children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: new Text("Postingan",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,fontSize: 20)),
+            ),
             SingleChildScrollView(
+              
                 controller: controller,
                 scrollDirection: Axis.vertical,
                 child: Column(children: <Widget>[
@@ -148,6 +166,7 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                   },
                                   child: InkWell(
                                     child: Container(
+                                      margin: EdgeInsets.all(5),
                                       child: Padding(
                                         padding:
                                             const EdgeInsets.only(bottom: 10),
