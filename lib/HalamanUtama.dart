@@ -20,8 +20,8 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
   final _widgetOptions = [
     Aspirasi(),
-    Beranda(),
-    Aspirasi(),
+    // Beranda(),
+    // Aspirasi(),
   ];
   
 
@@ -41,8 +41,8 @@ class _HomeState extends State<Home> {
             size: 20,
             color: Colors.white,
           ),
-          Icon(Icons.home, size: 20, color: Colors.white),
-          Icon(Icons.menu_book_outlined, size: 20, color: Colors.white),
+          // Icon(Icons.home, size: 20, color: Colors.white),
+          // Icon(Icons.menu_book_outlined, size: 20, color: Colors.white),
         ],
         animationDuration: Duration(
           milliseconds: 200

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
+import 'package:hmtif/Controller/ControllerDatabase.dart';
 import 'package:hmtif/Views/admin/HalamanPostinganAdmin.dart';
 
 import '../../main.dart';
@@ -29,7 +30,7 @@ class AdminAspirasi extends StatefulWidget {
 class _AdminAspirasiState extends State<AdminAspirasi> {
   final controller = ScrollController();
   double offset = 0;
-
+  final ControllerDatabase database = ControllerDatabase();
   @override
   void initState() {
     super.initState();
@@ -88,207 +89,172 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
       ),
       body: SingleChildScrollView(
         child: new Container(
-            height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(237, 8, 28, 21),
-              Color.fromARGB(255, 116, 198, 157)
-            ],
-          )),
             child: new Column(
-              children: <Widget>[
-                SingleChildScrollView(
-                    controller: controller,
-                    scrollDirection: Axis.vertical,
-                    child: Column(children: <Widget>[
-                      StreamBuilder(
-                        stream: Firestore.instance
-                            .collection("AspirasiMahasiswa")
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return SingleChildScrollView(
-                              child: ListView.builder(
-                                controller: controller,
-                                shrinkWrap: true,
-                                itemCount: snapshot.data.documents.length,
-                                itemBuilder: (context, index) {
-                                  DocumentSnapshot documentSnapshot =
-                                      snapshot.data.documents[index];
-                                  Map<String, dynamic> task =
-                                      documentSnapshot.data();
+          children: <Widget>[
+            SingleChildScrollView(
+                controller: controller,
+                scrollDirection: Axis.vertical,
+                child: Column(children: <Widget>[
+                  StreamBuilder(
+                    stream: Firestore.instance
+                        .collection("AspirasiMahasiswa")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return SingleChildScrollView(
+                          child: ListView.builder(
+                            controller: controller,
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot documentSnapshot =
+                                  snapshot.data.documents[index];
+                              Map<String, dynamic> task =
+                                  documentSnapshot.data();
 
-                                  return FadeAnimation(
-                                    1.8,
-                                    GestureDetector(
-                                      onTap: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text(documentSnapshot
-                                                  .data()['name']),
-                                              content: Text(documentSnapshot
-                                                  .data()['deskripsi']),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text('Post'),
-                                                  onPressed: () {
-                                                    String documentId =
-                                                        documentSnapshot
-                                                            .documentID;
-                                                    String name =
-                                                        documentSnapshot
-                                                            .data()['name'];
-                                                    String deskripsi =
-                                                        documentSnapshot.data()[
-                                                            'deskripsi'];
-
-                                                    DocumentReference
-                                                        documentReference =
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                "Aspirasi")
-                                                            .document(
-                                                                documentId);
-                                                    Map<String, dynamic>
-                                                        students = {
-                                                      "name": name,
-                                                      "deskripsi": deskripsi,
-                                                      "jumlahLike": 0,
-                                                    };
-
-                                                    documentReference
-                                                        .setData(students)
-                                                        .whenComplete(() {
-                                                      print("$name created");
-                                                    });
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return AlertDialog(
-                                                            title: Text(
-                                                                'Aspirasi dan keluhan berhasil dipost!!!'),
-                                                            actions: <Widget>[
-                                                              FlatButton(
-                                                                child:
-                                                                    Text('Ok'),
-                                                                onPressed: () {
-                                                                  documentSnapshot
-                                                                      .reference
-                                                                      .delete();
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .push(new MaterialPageRoute(
-                                                                          builder: (BuildContext context) =>
-                                                                              new AdminAspirasi()));
-                                                                },
-                                                              ),
-                                                            ],
-                                                          );
-                                                        });
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: InkWell(
-                                        child: Container(
-                                          margin: EdgeInsets.all(5),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Container(
-                                              child: SizedBox(
-                                                height: 50,
-                                                child: Stack(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  children: <Widget>[
-                                                    Container(
-                                                      height: 50,
-                                                      width: double.infinity,
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        color: Colors.white,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            offset:
-                                                                Offset(0, 8),
-                                                            blurRadius: 24,
-                                                            color: Colors.grey,
+                              return FadeAnimation(
+                                1.8,
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                              documentSnapshot.data()['name']),
+                                          content: Text(documentSnapshot
+                                              .data()['deskripsi']),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Post'),
+                                              onPressed: () {
+                                                String documentId =
+                                                    documentSnapshot.documentID;
+                                                String name = documentSnapshot
+                                                    .data()['name'];
+                                                String deskripsi =
+                                                    documentSnapshot
+                                                        .data()['deskripsi'];
+                                                database.post(name, deskripsi, documentId);
+                                               
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            'Aspirasi dan keluhan berhasil dipost!!!'),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text('Ok'),
+                                                            onPressed: () {
+                                                              documentSnapshot
+                                                                  .reference
+                                                                  .delete();
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .push(new MaterialPageRoute(
+                                                                      builder: (BuildContext
+                                                                              context) =>
+                                                                          new AdminAspirasi()));
+                                                            },
                                                           ),
                                                         ],
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      left: 10,
-                                                      child: Container(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 20,
-                                                                vertical: 15),
-                                                        height: 50,
-                                                        width: MediaQuery.of(
-                                                                    context)
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: InkWell(
+                                    child: Container(
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 1),
+                                        child: Container(
+                                          child: SizedBox(
+                                            height: 50,
+                                            child: Stack(
+                                              alignment: Alignment.centerLeft,
+                                              children: <Widget>[
+                                                Container(
+                                                  height: 50,
+                                                  width: double.infinity,
+                                                  decoration: BoxDecoration(
+                                                    // borderRadius:
+                                                    //     BorderRadius.circular(
+                                                    //         20),
+                                                    color: Color.fromARGB(200, 218, 215, 205),
+                                                    // boxShadow: [
+                                                    //   BoxShadow(
+                                                    //     offset: Offset(0, 8),
+                                                    //     blurRadius: 24,
+                                                    //     color: Colors.grey,
+                                                    //   ),
+                                                    // ],
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                  left: 10,
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 15),
+                                                    height: 50,
+                                                    width:
+                                                        MediaQuery.of(context)
                                                                 .size
                                                                 .width -
-                                                            170,
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: <Widget>[
-                                                            Text(
-                                                              documentSnapshot
-                                                                      .data()[
-                                                                  'name'],
-                                                            ),
-                                                          ],
+                                                            40,
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          documentSnapshot
+                                                              .data()['name'],style:TextStyle(fontWeight:FontWeight.bold)
                                                         ),
-                                                      ),
+                                                      ],
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
-                            );
-                          } else if(snapshot.hasData == null){
-                            return Container(
-                              margin: EdgeInsets.all(50),
-                              child: Column(children: <Widget>[
-                                Text(
-                                    "Belum ada aspirasi dan keluhan dari mahasiswa",
-                                    style: TextStyle(
-                                        fontStyle: FontStyle.italic,
-                                        color: Colors.black))
-                              ]),
-                            );
-                          }
-                        },
-                      ),
-                    ])),
-              ],
-            )),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else  {
+                        return Container(
+                          margin: EdgeInsets.all(50),
+                          child: Column(children: <Widget>[
+                            Text(
+                                "Belum ada aspirasi dan keluhan dari mahasiswa",
+                                style: TextStyle(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black))
+                          ]),
+                        );
+                      }
+                    },
+                  ),
+                ])),
+          ],
+        )),
       ),
     );
   }

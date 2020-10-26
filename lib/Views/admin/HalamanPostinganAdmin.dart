@@ -52,81 +52,56 @@ class _PostinganAdminState extends State<PostinganAdmin> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          title: Text("Halaman Postingan Admin"),
-          backgroundColor:Color.fromARGB(237, 8, 28, 21) ,
+      appBar: AppBar(
+        title: Text("Halaman Postingan Admin"),
+        backgroundColor: Color.fromARGB(237, 8, 28, 21),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(top: 20)),
+            ListTile(
+              title: Text('Postingan'),
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new PostinganAdmin()));
+              },
+            ),
+            ListTile(
+              title: Text('Aspirasi Mahasiswa'),
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new AdminAspirasi()));
+              },
+            ),
+            ListTile(
+              title: Text('Logout'),
+              onTap: () {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new LoginScreen()));
+              },
+            ),
+          ],
         ),
-        drawer: Drawer(
-          child: ListView(
-    // Important: Remove any padding from the ListView.
-    padding: EdgeInsets.zero,
-    children: <Widget>[
-      Padding(padding:EdgeInsets.only(top:20)),
-      ListTile(
-        title: Text('Postingan'),
-        onTap: () {
-          
-          Navigator.of(context).push(new MaterialPageRoute(
-                 builder: (BuildContext context) => new PostinganAdmin()));
-        
-        },
       ),
-      ListTile(
-        title: Text('Aspirasi Mahasiswa'),
-        onTap: () {
-          
-         Navigator.of(context).push(new MaterialPageRoute(
-                 builder: (BuildContext context) => new AdminAspirasi()));
-        
-        },
-      ),
-     ListTile(
-        title: Text('Logout'),
-        onTap: () {
-          
-         Navigator.of(context).push(new MaterialPageRoute(
-                 builder: (BuildContext context) => new LoginScreen()));
-        
-        },
-      ),
-    ],
-  ),
-        ),
       body: SingleChildScrollView(
         child: new Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(237, 8, 28, 21),
-              Color.fromARGB(255, 116, 198, 157)
-            ],
-          )),
             child: new Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: new Text("Postingan",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,fontSize: 20)),
-            ),
             SingleChildScrollView(
-              
                 controller: controller,
                 scrollDirection: Axis.vertical,
                 child: Column(children: <Widget>[
                   StreamBuilder(
-                    stream: Firestore.instance
-                        .collection("Aspirasi")
-                        .snapshots(),
+                    stream:
+                        Firestore.instance.collection("Aspirasi").snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return SingleChildScrollView(
                           child: ListView.builder(
-                                                controller : controller,
+                            controller: controller,
                             shrinkWrap: true,
                             itemCount: snapshot.data.documents.length,
                             itemBuilder: (context, index) {
@@ -139,37 +114,36 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                 1.8,
                                 GestureDetector(
                                   onTap: () {
-                                   showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text('Yakin mau hapus?'),
-                                                actions: <Widget>[
-                                                  FlatButton(
-                                                    child: Text('Tidak'),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  FlatButton(
-                                                    child: Text('Ya'),
-                                                    onPressed: () {
-                                                      documentSnapshot.reference
-                                                          .delete();
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          );
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Yakin mau hapus?'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Tidak'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text('Ya'),
+                                              onPressed: () {
+                                                documentSnapshot.reference
+                                                    .delete();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                   child: InkWell(
                                     child: Container(
-                                      margin: EdgeInsets.all(5),
                                       child: Padding(
                                         padding:
-                                            const EdgeInsets.only(bottom: 10),
+                                            const EdgeInsets.only(bottom: 1),
                                         child: Container(
                                           child: SizedBox(
                                             height: 50,
@@ -180,20 +154,19 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                                   height: 50,
                                                   width: double.infinity,
                                                   decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color: Colors.white,
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        offset: Offset(0, 8),
-                                                        blurRadius: 24,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ],
+                                                    // borderRadius:
+                                                    // BorderRadius.circular(
+                                                    //     20),
+                                                    color: Color.fromARGB(200, 218, 215, 205),
+                                                    // boxShadow: [
+                                                    //   BoxShadow(
+                                                    //     offset: Offset(0, 8),
+                                                    //     blurRadius: 24,
+                                                    //     color: Colors.grey,
+                                                    //   ),
+                                                    // ],
                                                   ),
                                                 ),
-                                               
                                                 Positioned(
                                                   left: 10,
                                                   child: Container(
@@ -216,29 +189,30 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                                               .spaceBetween,
                                                       children: <Widget>[
                                                         Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              Text(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
                                                                 documentSnapshot
                                                                         .data()[
-                                                                    'name'], style:TextStyle(fontWeight:FontWeight.bold)
+                                                                    'name'],
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold)),
+                                                            Text(
+                                                              "Like " +
+                                                                  documentSnapshot
+                                                                      .data()[
+                                                                          'jumlahLike']
+                                                                      .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 12,
                                                               ),
-                                                              Text(
-                                                                "Like " +
-                                                                    documentSnapshot
-                                                                        .data()[
-                                                                            'jumlahLike']
-                                                                        .toString(),
-                                                               
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize: 12,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -251,7 +225,6 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                     ),
                                   ),
                                 ),
-                                
                               );
                             },
                           ),
@@ -261,9 +234,7 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                       }
                     },
                   ),
-                ]
-                )
-                ),
+                ])),
           ],
         )),
       ),

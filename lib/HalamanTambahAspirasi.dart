@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hmtif/HalamanUtama.dart';
 
+import 'Controller/ControllerDatabase.dart';
 import 'DatabaseManager.dart';
 import 'Views/HalamanAspirasi.dart';
 
@@ -27,6 +28,7 @@ class TambahAspirasi extends StatefulWidget {
 }
 
 class _TambahAspirasiState extends State<TambahAspirasi> {
+  ControllerDatabase database = new ControllerDatabase();
   String name, deskripsi, status = "belum diproses";
   int jumlahLike;
   getAspirasiName(name) {
@@ -67,12 +69,15 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text("Halaman Tambah Aspirasi"),
+          backgroundColor: Color.fromARGB(237, 8, 28, 21),
         ),
+        backgroundColor: Colors.white,
         body: Container(
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: SingleChildScrollView(
               child: Column(children: <Widget>[
+                Image.asset("img/6558.jpg"),
                 Padding(
                   padding: EdgeInsets.only(bottom: 8),
                   child: TextFormField(
@@ -110,7 +115,7 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                           color: Colors.blue,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16)),
-                          child: Text("Create"),
+                          child: Text("Tambah"),
                           textColor: Colors.white,
                           onPressed: () {
                             showDialog(
@@ -123,7 +128,8 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                                     FlatButton(
                                       child: Text('Ya'),
                                       onPressed: () {
-                                        createData();
+                                        // createData();
+                                        database.createData(name, deskripsi);
                                         showDialog(
                                             context: context,
                                             builder: (BuildContext context) {

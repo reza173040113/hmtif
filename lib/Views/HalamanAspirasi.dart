@@ -72,36 +72,37 @@ class _AspirasiState extends State<Aspirasi> {
             child: new Column(
               children: <Widget>[
                 Container(
-                    padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: new Text("Dashboard",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 20)
-                                    )
-                                    ),
-                                    GestureDetector(
-                                      onTap: (){
-                                        Navigator.of(context).push(new MaterialPageRoute(
-                 builder: (BuildContext context) => new LoginScreen()));
-                                      },
-                                                                          child: Padding(
-                                        padding: const EdgeInsets.only(right:15.0),
-                                        child: Align(
+                  padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                          alignment: Alignment.centerLeft,
+                          child: new Text("Dashboard",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 20))),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  new LoginScreen()));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 15.0),
+                          child: Align(
                             alignment: Alignment.centerRight,
-                            child: new Icon(Icons.logout, color: Colors.white,),
-                                        ),
-                                      ),
-                                    ),
-                      ],
-                    ),
-                                
-                                ),
+                            child: new Icon(
+                              Icons.logout,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 new Padding(padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
                 GestureDetector(
                   onTap: () {
@@ -195,91 +196,97 @@ class _AspirasiState extends State<Aspirasi> {
                                           );
                                         },
                                         child: InkWell(
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                                left: 10, right: 10, top: 5),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 10),
-                                              child: Container(
-                                                child: SizedBox(
-                                                  height: 50,
-                                                  child: Stack(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    children: <Widget>[
-                                                      Container(
-                                                        height: 50,
-                                                        width: double.infinity,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          color: Colors.white,
-                                                          boxShadow: [
-                                                            BoxShadow(
-                                                              offset:
-                                                                  Offset(0, 8),
-                                                              blurRadius: 24,
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Positioned(
-                                                        left: 10,
-                                                        child: Container(
-                                                          padding: EdgeInsets
-                                                              .symmetric(
-                                                                  horizontal:
-                                                                      20,
-                                                                  vertical: 15),
+                                          child: SingleChildScrollView(
+                                            controller: controller,
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 10, right: 10, top: 5),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 10),
+                                                child: Container(
+                                                  child: SizedBox(
+                                                    height: 50,
+                                                    child: Stack(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      children: <Widget>[
+                                                        Container(
                                                           height: 50,
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width -
-                                                              40,
-                                                          child: Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: <Widget>[
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: [
-                                                                  Text(
-                                                                      documentSnapshot
-                                                                              .data()[
-                                                                          'name'],
-                                                                      style: TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.bold)),
-                                                                  Text(
-                                                                    "Like " +
-                                                                        documentSnapshot
-                                                                            .data()['jumlahLike']
-                                                                            .toString(),
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontSize:
-                                                                          12,
-                                                                    ),
-                                                                  ),
-                                                                ],
+                                                          width:
+                                                              double.infinity,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                            color: Colors.white,
+                                                            boxShadow: [
+                                                              BoxShadow(
+                                                                offset: Offset(
+                                                                    0, 8),
+                                                                blurRadius: 24,
+                                                                color:
+                                                                    Colors.grey,
                                                               ),
                                                             ],
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Positioned(
+                                                          left: 10,
+                                                          child: Container(
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    horizontal:
+                                                                        20,
+                                                                    vertical:
+                                                                        15),
+                                                            height: 50,
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width -
+                                                                40,
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: <
+                                                                  Widget>[
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text(
+                                                                        documentSnapshot.data()[
+                                                                            'name'],
+                                                                        style: TextStyle(
+                                                                            fontWeight:
+                                                                                FontWeight.bold)),
+                                                                    Text(
+                                                                      "Like " +
+                                                                          documentSnapshot
+                                                                              .data()['jumlahLike']
+                                                                              .toString(),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            12,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
