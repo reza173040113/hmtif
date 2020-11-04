@@ -8,26 +8,16 @@ class ModelDatabase{
     DocumentReference documentReference =
         Firestore.instance.collection("AspirasiMahasiswa").document();
 
-    //createMap
-    // Map<String, dynamic> aspirasi = {
-    //   "name": name,
-    //   "deskripsi": deskripsi,
-    // };
 
     documentReference.setData(aspirasi).whenComplete(() {
       print("$name created");
     });
   }
-  Future<DocumentSnapshot> postData(String name,Map<String, dynamic> aspirasi) async {
+  Future<DocumentSnapshot> saveAspirasi(String name,String documentId,Map<String, dynamic> aspirasi) async {
     await Firebase.initializeApp();
     DocumentReference documentReference =
-        Firestore.instance.collection("Aspirasi").document();
+        Firestore.instance.collection("Aspirasi").document(documentId);
 
-    //createMap
-    // Map<String, dynamic> aspirasi = {
-    //   "name": name,
-    //   "deskripsi": deskripsi,
-    // };
 
     documentReference.setData(aspirasi).whenComplete(() {
       print("$name created");

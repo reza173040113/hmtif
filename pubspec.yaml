@@ -64,6 +64,9 @@ flutter:
       - img/light-1.png
       - img/light-2.png
       - img/orang.jpg
+      - img/bg.png
+      - img/foreground.png
+      - img/home.png
 
   #   - images/a_dot_ham.jpeg
 

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
 import 'package:hmtif/Controller/ControllerDatabase.dart';
 import 'package:hmtif/Views/admin/HalamanPostinganAdmin.dart';
+import 'package:hmtif/Views/coba/MyApp.dart';
 
 import '../../main.dart';
 import 'HalamanEditAspirasiAdmin.dart';
@@ -31,6 +33,8 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
   final controller = ScrollController();
   double offset = 0;
   final ControllerDatabase database = ControllerDatabase();
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   @override
   void initState() {
     super.initState();
@@ -79,9 +83,10 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
             ),
             ListTile(
               title: Text('Logout'),
-              onTap: () {
-                Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => new LoginScreen()));
+              onTap: () async {
+                 await _firebaseAuth.signOut();
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (BuildContext context) => new MyApp()));
               },
             ),
           ],

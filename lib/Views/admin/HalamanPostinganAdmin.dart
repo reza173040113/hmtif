@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
+import 'package:hmtif/Views/coba/MyApp.dart';
 
 import '../../main.dart';
 import 'HalamanAdminAspirasi.dart';
@@ -29,6 +31,7 @@ class PostinganAdmin extends StatefulWidget {
 class _PostinganAdminState extends State<PostinganAdmin> {
   final controller = ScrollController();
   double offset = 0;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -78,9 +81,10 @@ class _PostinganAdminState extends State<PostinganAdmin> {
             ),
             ListTile(
               title: Text('Logout'),
-              onTap: () {
-                Navigator.of(context).push(new MaterialPageRoute(
-                    builder: (BuildContext context) => new LoginScreen()));
+              onTap: () async {
+                await _firebaseAuth.signOut();
+                          Navigator.of(context).push(new MaterialPageRoute(
+                              builder: (BuildContext context) => new MyApp()));
               },
             ),
           ],

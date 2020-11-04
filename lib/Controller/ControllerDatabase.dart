@@ -6,35 +6,35 @@ class ControllerDatabase {
   ModelDatabase modelDatabase = new ModelDatabase();
   Future<DocumentSnapshot> createData(String name, String deskripsi) async {
     await Firebase.initializeApp();
-    // DocumentReference documentReference =
-    //     Firestore.instance.collection("AspirasiMahasiswa").document();
 
-    //createMap
     Map<String, dynamic> aspirasi = {
       "name": name,
       "deskripsi": deskripsi,
     };
     modelDatabase.saveData(name, aspirasi);
-
-    // documentReference.setData(aspirasi).whenComplete(() {
-    //   print("$name created");
-    // });
   }
 
-  Future<DocumentSnapshot> post(String name, String deskripsi,String documentId) async {
+  Future<DocumentSnapshot> post(
+      String name, String deskripsi, String documentId) async {
     await Firebase.initializeApp();
-    // DocumentReference documentReference =
-    //     FirebaseFirestore.instance.collection("Aspirasi").document();
+
     Map<String, dynamic> postAspirasi = {
       "name": name,
       "deskripsi": deskripsi,
       "jumlahLike": 0,
-      "documentId" : documentId,
     };
-      modelDatabase.postData(name, postAspirasi);
+    modelDatabase.saveAspirasi(name,documentId, postAspirasi);
+  }
 
-    // documentReference.setData(postAspirasi).whenComplete(() {
-    //   print("$name created");
-    // });
+  Future<DocumentSnapshot> updateJumlah(
+      String name, String deskripsi, int jumlahLike, String documentId) async {
+    await Firebase.initializeApp();
+
+    Map<String, dynamic> updateJumlahLike = {
+      "name": name,
+      "deskripsi": deskripsi,
+      "jumlahLike": jumlahLike + 1,
+    };
+    modelDatabase.saveAspirasi(name,documentId, updateJumlahLike);
   }
 }

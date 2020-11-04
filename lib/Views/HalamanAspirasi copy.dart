@@ -203,7 +203,6 @@ class Aspirasi extends StatelessWidget {
                                                 name: task['name'],
                                                 deskripsi: task['deskripsi'],
                                                 jumlahLike: task['jumlahLike'],
-                                                status: task['status'],
                                               );
                                             }),
                                           );
@@ -243,7 +242,6 @@ class Aspirasi extends StatelessWidget {
                                                 name: task['name'],
                                                 deskripsi: task['deskripsi'],
                                                 jumlahLike: task['jumlahLike'],
-                                                status: task['status'],
                                               );
                                             }),
                                           );

@@ -2,11 +2,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/HalamanAdminAspirasi.dart';
+import 'package:hmtif/Views/coba/AuthView.dart';
 
 import 'AuthenticationServices.dart';
 import 'HalamanRegister.dart';
 import 'HalamanUtama.dart';
 import 'Views/admin/HalamanAdminAspirasi.dart';
+import 'Views/coba/MyApp.dart';
+import 'Views/coba/WelcomeView.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +17,7 @@ Future<void> main() async {
   runApp(MaterialApp(
     initialRoute: '/login',
     routes: {
-      '/login': (context) => LoginScreen(),
+      '/login': (context) => MyApp(),
       '/admin': (context) => AdminAspirasi(),
       '/user': (context) => Home(),
     },
