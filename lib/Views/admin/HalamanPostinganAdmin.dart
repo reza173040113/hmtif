@@ -83,8 +83,8 @@ class _PostinganAdminState extends State<PostinganAdmin> {
               title: Text('Logout'),
               onTap: () async {
                 await _firebaseAuth.signOut();
-                          Navigator.of(context).push(new MaterialPageRoute(
-                              builder: (BuildContext context) => new MyApp()));
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new MyApp()));
               },
             ),
           ],
@@ -161,7 +161,8 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                                     // borderRadius:
                                                     // BorderRadius.circular(
                                                     //     20),
-                                                    color: Color.fromARGB(200, 218, 215, 205),
+                                                    color: Color.fromARGB(
+                                                        200, 218, 215, 205),
                                                     // boxShadow: [
                                                     //   BoxShadow(
                                                     //     offset: Offset(0, 8),
@@ -197,14 +198,27 @@ class _PostinganAdminState extends State<PostinganAdmin> {
                                                               MainAxisAlignment
                                                                   .spaceBetween,
                                                           children: [
-                                                            Text(
-                                                                documentSnapshot
-                                                                        .data()[
-                                                                    'name'],
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold)),
+                                                            Flexible(
+                                                              child: RichText(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                strutStyle:
+                                                                    StrutStyle(
+                                                                        fontSize:
+                                                                            12.0),
+                                                                text: TextSpan(
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold),
+                                                                    text: documentSnapshot
+                                                                            .data()[
+                                                                        'name']),
+                                                              ),
+                                                            ),
                                                             Text(
                                                               "Like " +
                                                                   documentSnapshot

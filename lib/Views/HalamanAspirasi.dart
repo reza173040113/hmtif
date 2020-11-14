@@ -264,12 +264,20 @@ class _AspirasiState extends State<Aspirasi> {
                                                                       MainAxisAlignment
                                                                           .spaceBetween,
                                                                   children: [
-                                                                    Text(
-                                                                        documentSnapshot.data()[
-                                                                            'name'],
-                                                                        style: TextStyle(
-                                                                            fontWeight:
-                                                                                FontWeight.bold)),
+                                                                    Flexible(
+                                                                      child:
+                                                                          RichText(
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        strutStyle:
+                                                                            StrutStyle(fontSize: 12.0),
+                                                                        text: TextSpan(
+                                                                            style:
+                                                                                TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+                                                                            text: documentSnapshot.data()['name']),
+                                                                      ),
+                                                                    ),
+                                                                    new Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0),),
                                                                     Text(
                                                                       "Like " +
                                                                           documentSnapshot

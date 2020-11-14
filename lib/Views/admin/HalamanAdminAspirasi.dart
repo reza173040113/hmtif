@@ -33,7 +33,7 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
   final controller = ScrollController();
   double offset = 0;
   final ControllerDatabase database = ControllerDatabase();
-    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
@@ -84,9 +84,9 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
             ListTile(
               title: Text('Logout'),
               onTap: () async {
-                 await _firebaseAuth.signOut();
-                          Navigator.of(context).push(new MaterialPageRoute(
-                              builder: (BuildContext context) => new MyApp()));
+                await _firebaseAuth.signOut();
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new MyApp()));
               },
             ),
           ],
@@ -140,8 +140,9 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
                                                 String deskripsi =
                                                     documentSnapshot
                                                         .data()['deskripsi'];
-                                                database.post(name, deskripsi, documentId);
-                                               
+                                                database.post(name, deskripsi,
+                                                    documentId);
+
                                                 showDialog(
                                                     context: context,
                                                     builder:
@@ -192,7 +193,8 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
                                                     // borderRadius:
                                                     //     BorderRadius.circular(
                                                     //         20),
-                                                    color: Color.fromARGB(200, 218, 215, 205),
+                                                    color: Color.fromARGB(
+                                                        200, 218, 215, 205),
                                                     // boxShadow: [
                                                     //   BoxShadow(
                                                     //     offset: Offset(0, 8),
@@ -223,9 +225,26 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
                                                           MainAxisAlignment
                                                               .spaceBetween,
                                                       children: <Widget>[
-                                                        Text(
-                                                          documentSnapshot
-                                                              .data()['name'],style:TextStyle(fontWeight:FontWeight.bold)
+                                                        Flexible(
+                                                          child: RichText(
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            strutStyle:
+                                                                StrutStyle(
+                                                                    fontSize:
+                                                                        12.0),
+                                                            text: TextSpan(
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                                text: documentSnapshot
+                                                                        .data()[
+                                                                    'name']),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -243,7 +262,7 @@ class _AdminAspirasiState extends State<AdminAspirasi> {
                             },
                           ),
                         );
-                      } else  {
+                      } else {
                         return Container(
                           margin: EdgeInsets.all(50),
                           child: Column(children: <Widget>[
