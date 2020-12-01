@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hmtif/HalamanUtama.dart';
 import 'package:hmtif/Views/HalamanAspirasi.dart';
 import 'package:hmtif/Views/admin/HalamanAdminAspirasi.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   final routes = {
     "/welcome": (_) => WelcomeView(),
     "/auth": (_) => AuthView(),
-    "/home": (_) => Aspirasi(),
+    "/home": (_) => Home(),
     "/admin": (_) => AdminAspirasi(),
   };
 

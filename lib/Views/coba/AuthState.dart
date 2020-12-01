@@ -24,7 +24,6 @@ class AuthState with ChangeNotifier {
         _register();
       else
         _login();
-        _login2();
     } else {
       autoValidate = true;
       notifyListeners();
@@ -118,20 +117,6 @@ class AuthState with ChangeNotifier {
     if (value.length < 6) return "Password minimal 6 character";
     return null;
   }
-  _login2() {
-    _auth
-        .signInWithEmailAndPassword(email: "admin@gmail.com", password: "123456")
-        .then((value) {
-      authProcess = false;
-      notifyListeners();
-      print("hasil ${value.user.email}");
-      Navigator.pushReplacementNamed(context, "/admin");
-    }).catchError((err) {
-      authProcess = false;
-      notifyListeners();
-      print("hasil error $err");
-      _dialog(err.toString());
-    });
-  }
+  
 }
 

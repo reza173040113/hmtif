@@ -10,6 +10,8 @@ class ControllerDatabase {
     Map<String, dynamic> aspirasi = {
       "name": name,
       "deskripsi": deskripsi,
+      "jumlahLike":0,
+      "isEnable":"n",
     };
     modelDatabase.saveData(name, aspirasi);
   }
@@ -34,6 +36,7 @@ class ControllerDatabase {
       "name": name,
       "deskripsi": deskripsi,
       "jumlahLike": jumlahLike + 1,
+      "isEnable":"y",
     };
     modelDatabase.saveAspirasi(name,documentId, updateJumlahLike);
   }

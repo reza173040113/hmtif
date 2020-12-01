@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
 import 'package:hmtif/Controller/ControllerDatabase.dart';
@@ -11,7 +12,7 @@ import '../HalamanUtama.dart';
 class DetailAspirasi extends StatefulWidget {
   // final DocumentSnapshot MyStudent;
   // DetailAspirasi({this.MyStudent});
-  final String name, deskripsi, documentId;
+  final String name, deskripsi, documentId, email;
   final int jumlahLike;
   DetailAspirasi({
     // @required this.isEdit,
@@ -19,6 +20,7 @@ class DetailAspirasi extends StatefulWidget {
     @required this.name,
     @required this.deskripsi,
     @required this.jumlahLike,
+    @required this.email,
   });
   @override
   _DetailAspirasiState createState() => _DetailAspirasiState();
@@ -105,6 +107,7 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
+                                            
                                             Center(
                                               child: new Text(
                                                 widget.jumlahLike.toString(),
@@ -204,26 +207,28 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                               String documentId = widget.documentId;
                               String name = widget.name;
                               String deskripsi = widget.deskripsi;
-
+                              String email = widget.email;
                               int jumlahLike =
                                   int.parse(widget.jumlahLike.toString());
-                                  database.updateJumlah(name, deskripsi, jumlahLike, documentId);
-                              // DocumentReference documentReference =
-                              //     FirebaseFirestore.instance
-                              //         .collection("Aspirasi")
-                              //         .document(documentId);
-                              // Map<String, dynamic> students = {
-                              //   "name": name,
-                              //   "deskripsi": deskripsi,
-                              //   "jumlahLike": jumlahLike + 1,
-                              //   "status": status,
-                              // };
+                              database.updateJumlah(
+                                  name, deskripsi, jumlahLike, documentId);
+                              DocumentReference documentReference =
+                                  FirebaseFirestore.instance
+                                      .collection("AspirasiUsers")
+                                      .document();
 
-                              // documentReference
-                              //     .setData(students)
-                              //     .whenComplete(() {
-                              //   print("$name updated");
-                              // });
+                              Map<String, dynamic> aspirasiUser = {
+                                "email": email,
+                                "name": name,
+                                "buttonEnable": "y",
+                                "documentIdAspirasi": documentId,
+                              };
+
+                              documentReference
+                                  .setData(aspirasiUser)
+                                  .whenComplete(() {
+                                print("$name created");
+                              });
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {

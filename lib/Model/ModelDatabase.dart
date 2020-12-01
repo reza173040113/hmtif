@@ -6,7 +6,7 @@ class ModelDatabase{
   Future<DocumentSnapshot> saveData(String name,Map<String, dynamic> aspirasi) async {
     await Firebase.initializeApp();
     DocumentReference documentReference =
-        Firestore.instance.collection("AspirasiMahasiswa").document();
+        Firestore.instance.collection("Aspirasi").document();
 
 
     documentReference.setData(aspirasi).whenComplete(() {

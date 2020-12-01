@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
+import 'package:hmtif/Views/HalamanTambahAspirasi.dart';
 import 'package:hmtif/Views/coba/MyApp.dart';
 import 'package:hmtif/main.dart';
 
 import 'HalamanDetailAspirasi.dart';
 import '../HalamanEditAspirasi.dart';
-import '../HalamanTambahAspirasi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -161,28 +161,32 @@ class _AspirasiState extends State<Aspirasi> {
                       )),
                   child: Stack(
                     children: <Widget>[
-                      SingleChildScrollView(
-                        controller: controller,
-                        child: StreamBuilder(
-                          stream: Firestore.instance
-                              .collection("Aspirasi")
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return SingleChildScrollView(
-                                child: ListView.builder(
-                                  controller: controller,
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data.documents.length,
-                                  itemBuilder: (context, index) {
-                                    DocumentSnapshot documentSnapshot =
-                                        snapshot.data.documents[index];
-                                    Map<String, dynamic> task =
-                                        documentSnapshot.data();
+                      StreamBuilder(
+                        stream: Firestore.instance
+                            .collection("Aspirasi")
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 215),
+                              height: MediaQuery.of(context).size.height,
+                              child: ListView.builder(
+                                controller: controller,
+                                itemCount: snapshot.data.documents.length,
+                                itemBuilder: (context, index) {
+                                  DocumentSnapshot documentSnapshot =
+                                      snapshot.data.documents[index];
+                                  Map<String, dynamic> task =
+                                      documentSnapshot.data();
+                                  if (documentSnapshot.data()['isEnable'] ==
+                                      "y") {
                                     return FadeAnimation(
                                       1.8,
                                       GestureDetector(
                                         onTap: () async {
+                                          String email =
+                                              _firebaseAuth.currentUser.email;
+
                                           bool result = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -193,111 +197,114 @@ class _AspirasiState extends State<Aspirasi> {
                                                 name: task['name'],
                                                 deskripsi: task['deskripsi'],
                                                 jumlahLike: task['jumlahLike'],
+                                                email: email,
                                               );
                                             }),
                                           );
                                         },
-                                        child: InkWell(
-                                          child: SingleChildScrollView(
-                                            controller: controller,
+                                        child: Container(
+                                          margin: EdgeInsets.only(
+                                              left: 10, right: 10, top: 5),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 10),
                                             child: Container(
-                                              margin: EdgeInsets.only(
-                                                  left: 10, right: 10, top: 5),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 10),
-                                                child: Container(
-                                                  child: SizedBox(
-                                                    height: 50,
-                                                    child: Stack(
-                                                      alignment:
-                                                          Alignment.centerLeft,
-                                                      children: <Widget>[
-                                                        Container(
-                                                          height: 50,
-                                                          width:
-                                                              double.infinity,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            color: Colors.white,
-                                                            boxShadow: [
-                                                              BoxShadow(
-                                                                offset: Offset(
-                                                                    0, 8),
-                                                                blurRadius: 24,
-                                                                color:
-                                                                    Colors.grey,
-                                                              ),
-                                                            ],
+                                              child: SizedBox(
+                                                height: 50,
+                                                child: Stack(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  children: <Widget>[
+                                                    Container(
+                                                      height: 50,
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color: Colors.white,
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            offset:
+                                                                Offset(0, 8),
+                                                            blurRadius: 24,
+                                                            color: Colors.grey,
                                                           ),
-                                                        ),
-                                                        Positioned(
-                                                          left: 10,
-                                                          child: Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        20,
-                                                                    vertical:
-                                                                        15),
-                                                            height: 50,
-                                                            width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width -
-                                                                40,
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Positioned(
+                                                      left: 10,
+                                                      child: Container(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal: 20,
+                                                                vertical: 15),
+                                                        height: 50,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width -
+                                                            40,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: <Widget>[
+                                                            Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
                                                                       .spaceBetween,
-                                                              children: <
-                                                                  Widget>[
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Flexible(
-                                                                      child:
-                                                                          RichText(
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                        strutStyle:
-                                                                            StrutStyle(fontSize: 12.0),
-                                                                        text: TextSpan(
-                                                                            style:
-                                                                                TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
-                                                                            text: documentSnapshot.data()['name']),
-                                                                      ),
-                                                                    ),
-                                                                    new Padding(padding: EdgeInsets.fromLTRB(0, 0, 5, 0),),
-                                                                    Text(
-                                                                      "Like " +
-                                                                          documentSnapshot
-                                                                              .data()['jumlahLike']
-                                                                              .toString(),
-                                                                      style:
-                                                                          TextStyle(
+                                                              children: [
+                                                                Flexible(
+                                                                  child:
+                                                                      RichText(
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    strutStyle: StrutStyle(
                                                                         fontSize:
-                                                                            12,
-                                                                      ),
-                                                                    ),
-                                                                  ],
+                                                                            12.0),
+                                                                    text: TextSpan(
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .black,
+                                                                            fontWeight: FontWeight
+                                                                                .bold),
+                                                                        text: documentSnapshot
+                                                                            .data()['name']),
+                                                                  ),
+                                                                ),
+                                                                new Padding(
+                                                                  padding: EdgeInsets
+                                                                      .fromLTRB(
+                                                                          0,
+                                                                          0,
+                                                                          5,
+                                                                          0),
+                                                                ),
+                                                                Text(
+                                                                  "Like " +
+                                                                      documentSnapshot
+                                                                          .data()[
+                                                                              'jumlahLike']
+                                                                          .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                  ),
                                                                 ),
                                                               ],
                                                             ),
-                                                          ),
+                                                          ],
                                                         ),
-                                                      ],
+                                                      ),
                                                     ),
-                                                  ),
+                                                  ],
                                                 ),
                                               ),
                                             ),
@@ -305,14 +312,14 @@ class _AspirasiState extends State<Aspirasi> {
                                         ),
                                       ),
                                     );
-                                  },
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
+                                  }
+                                },
+                              ),
+                            );
+                          } else {
+                            return Container();
+                          }
+                        },
                       ),
                     ],
                   ),
