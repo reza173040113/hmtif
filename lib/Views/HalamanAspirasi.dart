@@ -163,7 +163,7 @@ class _AspirasiState extends State<Aspirasi> {
                     children: <Widget>[
                       StreamBuilder(
                         stream: Firestore.instance
-                            .collection("Aspirasi")
+                            .collection("Aspirasi").orderBy("tanggal")
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
@@ -196,6 +196,7 @@ class _AspirasiState extends State<Aspirasi> {
                                                     documentSnapshot.documentID,
                                                 name: task['name'],
                                                 deskripsi: task['deskripsi'],
+                                                tanggal: task['tanggal'],
                                                 jumlahLike: task['jumlahLike'],
                                                 email: email,
                                               );

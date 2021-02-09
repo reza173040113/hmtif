@@ -13,12 +13,14 @@ class DetailAspirasi extends StatefulWidget {
   // final DocumentSnapshot MyStudent;
   // DetailAspirasi({this.MyStudent});
   final String name, deskripsi, documentId, email;
+  final Timestamp tanggal;
   final int jumlahLike;
   DetailAspirasi({
     // @required this.isEdit,
     @required this.documentId,
     @required this.name,
     @required this.deskripsi,
+    @required this.tanggal,
     @required this.jumlahLike,
     @required this.email,
   });
@@ -30,11 +32,19 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
   @override
   Widget build(BuildContext context) {
     final ControllerDatabase database = new ControllerDatabase();
-
+    DocumentReference documentReference;
     final width = MediaQuery.of(context).size.width;
     Size size = MediaQuery.of(context).size;
     var delay = 1.5;
     final progress = widget.jumlahLike;
+    @override
+    void initState() {
+      documentReference = FirebaseFirestore.instance
+          .collection("likes")
+          .document(widget.documentId);
+      super.initState();
+    }
+
     return Scaffold(
       appBar: AppBar(
           centerTitle: false,
@@ -107,7 +117,6 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: <Widget>[
-                                            
                                             Center(
                                               child: new Text(
                                                 widget.jumlahLike.toString(),
@@ -208,27 +217,31 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                               String name = widget.name;
                               String deskripsi = widget.deskripsi;
                               String email = widget.email;
+                              Timestamp tanggal = widget.tanggal;
                               int jumlahLike =
                                   int.parse(widget.jumlahLike.toString());
                               database.updateJumlah(
-                                  name, deskripsi, jumlahLike, documentId);
-                              DocumentReference documentReference =
-                                  FirebaseFirestore.instance
-                                      .collection("AspirasiUsers")
-                                      .document();
+                                  name, deskripsi,tanggal, jumlahLike, documentId);
+                              // documentReference = FirebaseFirestore.instance
+                              //     .collection("likes")
+                              //     .document(documentId);
+                              // documentReference.snapshots().listen((event) {
+                              //   Map<String, dynamic> aspirasiUser = {
+                              //     "email": [
+                              //       email,
+                              //     ],
+                              //     "name": name,
+                              //     "buttonEnable": "y",
+                              //     "documentIdAspirasi": documentId,
+                              //   };
 
-                              Map<String, dynamic> aspirasiUser = {
-                                "email": email,
-                                "name": name,
-                                "buttonEnable": "y",
-                                "documentIdAspirasi": documentId,
-                              };
+                              //   documentReference
+                              //       .setData(aspirasiUser)
+                              //       .whenComplete(() {
+                              //     print("$name created");
+                              //   });
+                              // });
 
-                              documentReference
-                                  .setData(aspirasiUser)
-                                  .whenComplete(() {
-                                print("$name created");
-                              });
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {

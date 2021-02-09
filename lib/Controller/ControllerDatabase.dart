@@ -6,7 +6,6 @@ class ControllerDatabase {
   ModelDatabase modelDatabase = new ModelDatabase();
   Future<DocumentSnapshot> createData(String name, String deskripsi) async {
     await Firebase.initializeApp();
-
     Map<String, dynamic> aspirasi = {
       "name": name,
       "deskripsi": deskripsi,
@@ -29,12 +28,13 @@ class ControllerDatabase {
   }
 
   Future<DocumentSnapshot> updateJumlah(
-      String name, String deskripsi, int jumlahLike, String documentId) async {
+      String name, String deskripsi, Timestamp tanggal,int jumlahLike, String documentId) async {
     await Firebase.initializeApp();
-
+  tanggal=Timestamp.now();
     Map<String, dynamic> updateJumlahLike = {
       "name": name,
       "deskripsi": deskripsi,
+      "tanggal":tanggal,
       "jumlahLike": jumlahLike + 1,
       "isEnable":"y",
     };

@@ -29,6 +29,7 @@ class TambahAspirasi extends StatefulWidget {
 class _TambahAspirasiState extends State<TambahAspirasi> {
   ControllerDatabase database = new ControllerDatabase();
   String name, deskripsi, status = "belum diproses";
+  Timestamp tanggal = Timestamp.now();
   int jumlahLike;
   getAspirasiName(name) {
     this.name = name;
