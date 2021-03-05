@@ -3,8 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hmtif/Controller/ControllerDatabase.dart';
 import 'package:hmtif/HalamanUtama.dart';
-
-
+import 'package:giffy_dialog/giffy_dialog.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -133,44 +132,33 @@ class _TambahAspirasiState extends State<TambahAspirasi> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return AlertDialog(
+                                return NetworkGiffyDialog(
+                                  image: Image.asset("img/6558.jpg"),
                                   title: Text(
-                                      "Yakin ingin menyampaikan aspirasi ini?"),
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      child: Text('Ya'),
-                                      onPressed: () {
-                                        // createData();
-                                        database.createData(name, deskripsi);
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text(
-                                                    'Aspirasi dan keluhan berhasil ditambahkan!!!'),
-                                                actions: <Widget>[
-                                                  FlatButton(
-                                                    child: Text('Ok'),
-                                                    onPressed: () {
-                                                      Navigator.of(context).push(
-                                                          new MaterialPageRoute(
-                                                              builder: (BuildContext
-                                                                      context) =>
-                                                                  new Home()));
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            });
-                                      },
-                                    ),
-                                    FlatButton(
-                                      child: Text('Tidak'),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
+                                      "Yakin ingin menyampaikan aspirasi ini?",textAlign: TextAlign.center,),
+                                  onOkButtonPressed: () {
+                                    database.createData(name, deskripsi);
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return NetworkGiffyDialog(
+                                            image: Image.asset("img/centang.jpg"),
+                                            title: Text(
+                                                'Aspirasi dan keluhan berhasil ditambahkan!!!',textAlign: TextAlign.center,),
+                                            onlyOkButton: true,
+                                            onOkButtonPressed: () {
+                                              Navigator.of(context).push(
+                                                  new MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          new Home()));
+                                            },
+                                          );
+                                        });
+                                  },
+                                  onCancelButtonPressed: () {
+                                    Navigator.pop(context);
+                                  },
                                 );
                               },
                             );

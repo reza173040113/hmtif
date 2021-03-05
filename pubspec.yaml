@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  giffy_dialog: ^1.8.0
   cloud_firestore:
   firebase_core :
   firebase_auth :
@@ -67,6 +68,7 @@ flutter:
       - img/bg.png
       - img/foreground.png
       - img/home.png
+      - img/centang.jpg
 
   #   - images/a_dot_ham.jpeg
 

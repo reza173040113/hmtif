@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:hmtif/Animation/FadeAnimation.dart';
 import 'package:hmtif/Controller/ControllerDatabase.dart';
 
@@ -220,8 +221,8 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                               Timestamp tanggal = widget.tanggal;
                               int jumlahLike =
                                   int.parse(widget.jumlahLike.toString());
-                              database.updateJumlah(
-                                  name, deskripsi,tanggal, jumlahLike, documentId);
+                              database.updateJumlah(name, deskripsi, tanggal,
+                                  jumlahLike, documentId);
                               // documentReference = FirebaseFirestore.instance
                               //     .collection("likes")
                               //     .document(documentId);
@@ -245,21 +246,18 @@ class _DetailAspirasiState extends State<DetailAspirasi> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return AlertDialog(
+                                    return NetworkGiffyDialog(
+                                      image: Image.asset("img/centang.jpg"),
                                       title: Text(
-                                          'Terimakasih sudah menyetujui aspirasi dan keluhan ini'),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('OK'),
-                                          onPressed: () {
-                                            Navigator.of(context).push(
-                                                new MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
+                                          'Terimakasih sudah menyetujui aspirasi dan keluhan ini',textAlign: TextAlign.center,),
+                                      onlyOkButton: true,
+                                      onOkButtonPressed: () {
+                                        Navigator.of(context).push(
+                                            new MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
                                                         new Home()));
-                                          },
-                                        ),
-                                      ],
+                                      },
                                     );
                                   });
                             },
